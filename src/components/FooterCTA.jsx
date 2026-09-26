@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react'
+import BrandMark from './BrandMark'
 import SplitText from './SplitText'
 import { INSTAGRAM_URL, EMAIL, OWNER, WHATSAPP_URL } from '../data/site'
 
@@ -68,7 +69,7 @@ export default function FooterCTA() {
   return (
     <footer
       id="contacto"
-      className="relative scroll-mt-24 overflow-hidden border-t border-white/8 pt-28 pb-10 md:pt-40"
+      className="relative scroll-mt-24 overflow-hidden border-t border-white/8 pt-24 pb-10 md:pt-28"
     >
       {/* Aurora-lit backdrop for the finale. */}
       <div
@@ -91,7 +92,7 @@ export default function FooterCTA() {
           Siguiente paso
         </motion.span>
 
-        <h2 className="mt-6 max-w-[18ch] font-display text-[clamp(2.5rem,8.5vw,7rem)] leading-[0.92] text-bone">
+        <h2 className="mt-5 max-w-[18ch] font-display text-[clamp(2.5rem,8.5vw,7rem)] leading-[0.92] text-bone">
           <SplitText
             as="span"
             text="¿Listo para destacar tu negocio en internet?"
@@ -100,22 +101,36 @@ export default function FooterCTA() {
           />
         </h2>
 
-        <p className="mt-7 max-w-md text-base leading-relaxed text-slate md:text-lg">
+        {/* Brand mark bridges the headline and the ask, so the block reads as
+            one composition instead of two stacked text groups. */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.5 }}
+          className="mt-7 flex items-center gap-4 sm:mt-8"
+        >
+          <span aria-hidden="true" className="h-px w-10 bg-linear-to-r from-transparent to-white/20 sm:w-16" />
+          <BrandMark className="h-11 w-11 sm:h-14 sm:w-14" duration={0.95} />
+          <span aria-hidden="true" className="h-px w-10 bg-linear-to-l from-transparent to-white/20 sm:w-16" />
+        </motion.div>
+
+        <p className="mt-6 max-w-md text-base leading-relaxed text-slate md:text-lg">
           Contame qué tenés en mente y te paso una idea de cómo se vería tu
           proyecto.
         </p>
 
-        <div className="mt-12">
+        <div className="mt-9">
           <GiantCta />
         </div>
 
-        <p className="mt-5 font-mono text-[0.6rem] tracking-[0.2em] text-slate-dim uppercase">
+        <p className="mt-4 font-mono text-[0.6rem] tracking-[0.2em] text-slate-dim uppercase">
           Respuesta en menos de 24 horas
         </p>
       </div>
 
       {/* Slim meta strip */}
-      <div className="shell mt-24 border-t border-white/8 pt-8 md:mt-32">
+      <div className="shell mt-14 border-t border-white/8 pt-7 md:mt-18">
         <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
           <p className="font-mono text-[0.6rem] tracking-[0.18em] text-slate-dim uppercase">
             © {new Date().getFullYear()} {OWNER.name}

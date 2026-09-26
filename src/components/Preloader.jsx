@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
+import BrandMark from './BrandMark'
 
 /** Never let the loader outlast this, however slow the connection is. */
 const MAX_MS = 2600
@@ -152,42 +153,7 @@ export default function Preloader({ onDone }) {
       }}
     >
       {/* Logo draws itself: the V first, then the underline. */}
-      <svg
-        viewBox="0 0 40 40"
-        fill="none"
-        className="h-16 w-16 sm:h-20 sm:w-20"
-        aria-hidden="true"
-      >
-        <motion.path
-          d="M11 13.5 L20 27.5 L29 13.5"
-          stroke="#E8B4A0"
-          strokeWidth="3.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{
-            pathLength: { duration: reduce ? 0 : 1.1, ease: [0.16, 1, 0.3, 1] },
-            opacity: { duration: reduce ? 0 : 0.2 },
-          }}
-        />
-        <motion.path
-          d="M14.5 32 H25.5"
-          stroke="#E8B4A0"
-          strokeWidth="3.2"
-          strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.9 }}
-          transition={{
-            pathLength: {
-              duration: reduce ? 0 : 0.6,
-              delay: reduce ? 0 : 0.85,
-              ease: [0.16, 1, 0.3, 1],
-            },
-            opacity: { duration: reduce ? 0 : 0.4, delay: reduce ? 0 : 0.85 },
-          }}
-        />
-      </svg>
+      <BrandMark className="h-16 w-16 sm:h-20 sm:w-20" trigger="mount" />
 
       <motion.span
         initial={{ opacity: 0, y: 8 }}
