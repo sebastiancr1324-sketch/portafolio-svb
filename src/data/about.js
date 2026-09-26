@@ -15,10 +15,25 @@ export const FACTS = {
   age: 18,
   coderHouse: true,
   originCountry: 'Venezuela',
-  originCity: 'Caracas',
+  originCity: 'Trujillo',
   yearsInArgentina: 8,
-  movedAtAge: 10, // [INVENTADO] deducido: 18 - 8. Confirmar.
+  movedAtAge: 10, // [REAL] confirmado: llegaste con 10 años.
 }
+
+/**
+ * [CONFIRMADO] Tecnologías para Credenciales y SEO.
+ * Las que se ven en este mismo proyecto están respaldadas por el código.
+ */
+export const TECH = [
+  'HTML5',
+  'CSS3',
+  'JavaScript',
+  'React',
+  'Tailwind CSS',
+  'Diseño responsive',
+  'Git',
+  'GitHub',
+]
 
 /** [INVENTADO] Párrafos de presentación. */
 export const BIO = [

@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import SplitText from './SplitText'
-import { BIO, DRIVERS, FACTS, STATS } from '../data/about'
+import { BIO, DRIVERS, FACTS, STATS, TECH } from '../data/about'
 
 /**
  * Origin → current location. Small typographic device, no map image needed.
@@ -143,6 +143,38 @@ export default function About() {
                 </li>
               ))}
             </ul>
+
+            {/* Tech chips. Doubles as scannable credentials and as SEO
+                surface for the technologies the site is actually built with. */}
+            <div className="mt-14">
+              <motion.h3
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="font-mono text-[0.6rem] tracking-[0.24em] text-slate-dim uppercase"
+              >
+                Con qué trabajo
+              </motion.h3>
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {TECH.map((tech, i) => (
+                  <motion.li
+                    key={tech}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{
+                      duration: 0.55,
+                      delay: i * 0.045,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="rounded-full bg-white/[0.04] px-4 py-2 font-mono text-[0.62rem] tracking-[0.12em] text-mist uppercase ring-1 ring-white/8 transition-colors duration-500 hover:ring-peach/40 hover:text-peach"
+                  >
+                    {tech}
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
 
             <ul className="mt-16 flex flex-col">
               {DRIVERS.map((driver, i) => (
