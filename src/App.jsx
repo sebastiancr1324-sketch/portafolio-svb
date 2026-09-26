@@ -1,14 +1,22 @@
+import { useState } from 'react'
+import About from './components/About'
 import FooterCTA from './components/FooterCTA'
 import GlowCursor from './components/GlowCursor'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Portfolio from './components/Portfolio'
 import PortalTransition from './components/PortalTransition'
+import Preloader from './components/Preloader'
 import Services from './components/Services'
 
 export default function App() {
+  // Hero entrance waits on this so it plays into a settled page.
+  const [ready, setReady] = useState(false)
+
   return (
     <>
+      <Preloader onDone={() => setReady(true)} />
+
       {/* Decorative pointer light, fine-pointer devices only. */}
       <GlowCursor />
 
@@ -22,10 +30,11 @@ export default function App() {
       <Header />
 
       <main>
-        <Hero />
+        <Hero ready={ready} />
         <PortalTransition />
         <Portfolio />
         <Services />
+        <About />
       </main>
 
       <FooterCTA />

@@ -18,14 +18,6 @@ export const OWNER = {
 export const NAV_LINKS = [
   { label: 'Servicios', href: '#servicios' },
   { label: 'Proyectos', href: '#proyectos' },
+  { label: 'Sobre mí', href: '#sobre-mi' },
   { label: 'Contacto', href: '#contacto' },
-]
-
-/** Marquee strip under the hero. Purely typographic texture. */
-export const HERO_MARQUEE = [
-  'Landing pages',
-  'E-commerce',
-  'Sitios institucionales',
-  'Sistemas de turnos',
-  'Interfaces a medida',
 ]

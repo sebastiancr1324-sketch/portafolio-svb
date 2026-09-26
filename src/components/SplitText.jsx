@@ -38,6 +38,8 @@ export default function SplitText({
   start = 'whileInView',
   once = true,
   amount = 0.4,
+  /** Gates a `start="mount"` animation, so it can wait for the preloader. */
+  active = true,
 }) {
   const reduce = useReducedMotion()
   const Tag = ALLOWED_TAGS.has(as) ? as : 'span'
@@ -50,7 +52,11 @@ export default function SplitText({
 
   const anim =
     start === 'mount'
-      ? { animate: { y: '0%', opacity: 1 } }
+      ? {
+          // Parked in the hidden state until `active` flips, so a gated
+          // headline does not animate in behind the preloader.
+          animate: active ? { y: '0%', opacity: 1 } : { y: '105%', opacity: 0 },
+        }
       : { whileInView: { y: '0%', opacity: 1 }, viewport: { once, amount } }
 
   return (

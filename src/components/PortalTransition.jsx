@@ -1,21 +1,30 @@
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import { PROJECTS } from '../data/projects'
+import { useIsMobile } from '../lib/hooks'
 
 /**
  * PortalTransition — the 3D scroll-driven bridge between hero and portfolio.
  *
- * A small glass slab floats in perspective holding a mosaic of the four real
- * project shots. As the section scrolls, the slab scales and un-tilts until it
- * fills the viewport, at which point the mosaic has become the portfolio.
+ * A small glass slab holds a mosaic of the four real project shots. As the
+ * section scrolls, the slab scales, un-tilts and travels toward the camera
+ * until it fills the viewport, at which point the mosaic has become the
+ * portfolio.
  *
- * The section is 260vh tall with a sticky child, so the whole effect is driven
- * by scroll position rather than by timers. Only transform and opacity are
- * animated, so the whole thing stays on the compositor.
+ * Motion is retuned per breakpoint. On a phone the same values read as "far
+ * away", because a narrow viewport makes a small object feel distant and the
+ * long perspective flattens the depth. Phones therefore get a tighter
+ * perspective, a much larger start scale, a real translateZ toward the camera
+ * and a shorter scroll run so the approach feels closer and quicker.
+ *
+ * The section is tall with a sticky child, so scroll position drives
+ * everything. Only transform and opacity are animated, so it stays on the
+ * compositor.
  */
 export default function PortalTransition() {
   const ref = useRef(null)
   const reduce = useReducedMotion()
+  const isMobile = useIsMobile()
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -29,19 +38,26 @@ export default function PortalTransition() {
     restDelta: 0.001,
   })
 
-  const scale = useTransform(smooth, [0, 0.55, 1], [0.2, 0.62, 1])
-  const rotateX = useTransform(smooth, [0, 1], [26, 0])
-  const y = useTransform(smooth, [0, 1], [70, 0])
+  // Start closer on mobile, and travel toward the camera instead of only
+  // growing — translateZ is what actually reads as "coming at you".
+  const [from, to] = isMobile
+    ? [{ s: 0.46, rx: 34, z: -280, y: 44 }, { s: 1, rx: 0, z: 0, y: 0 }]
+    : [{ s: 0.22, rx: 26, z: -420, y: 70 }, { s: 1, rx: 0, z: 0, y: 0 }]
+
+  const scale = useTransform(smooth, [0, 0.55, 1], [from.s, (from.s + 1) / 2, to.s])
+  const rotateX = useTransform(smooth, [0, 1], [from.rx, to.rx])
+  const z = useTransform(smooth, [0, 1], [from.z, to.z])
+  const y = useTransform(smooth, [0, 1], [from.y, to.y])
   const opacity = useTransform(smooth, [0, 0.12], [0, 1])
-  const radius = useTransform(smooth, [0, 1], [28, 0])
-  const hintOpacity = useTransform(smooth, [0, 0.18], [1, 0])
-  // Inner mosaic starts compressed; easing it out makes the reveal feel like
-  // a lens opening rather than a plain scale.
-  const mosaicScale = useTransform(smooth, [0, 1], [1.35, 1])
+  const radius = useTransform(smooth, [0, 1], [isMobile ? 22 : 28, 0])
+  // Inner mosaic starts over-scaled and settles, so the shot feels like it is
+  // rushing at the viewer rather than being revealed.
+  const mosaicScale = useTransform(smooth, [0, 1], [isMobile ? 1.6 : 1.35, 1])
   const glowOpacity = useTransform(smooth, [0, 0.5, 1], [0.9, 0.35, 0])
+  const hintOpacity = useTransform(smooth, [0, 0.18], [1, 0])
 
   if (reduce) {
-    // Reduced motion: skip the travel entirely and show a static lead-in.
+    // Reduced motion: skip the travel and show a static lead-in.
     return (
       <section className="relative border-t border-white/8 py-24">
         <div className="shell text-center">
@@ -54,12 +70,14 @@ export default function PortalTransition() {
   }
 
   return (
-    <section
-      ref={ref}
-      aria-hidden="true"
-      className="relative h-[260vh]"
-    >
-      <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden [perspective:1400px]">
+    <section ref={ref} aria-hidden="true" className={isMobile ? 'relative h-[220vh]' : 'relative h-[260vh]'}>
+      <div
+        className="sticky top-0 flex h-svh items-center justify-center overflow-hidden"
+        style={{
+          // Tighter perspective on phones so the depth actually registers.
+          perspective: isMobile ? 780 : 1400,
+        }}
+      >
         {/* Ambient glow behind the slab */}
         <motion.div
           style={{ opacity: glowOpacity }}
@@ -81,11 +99,13 @@ export default function PortalTransition() {
             scale,
             rotateX,
             y,
+            z: z,
             opacity,
             borderRadius: radius,
             transformStyle: 'preserve-3d',
+            willChange: 'transform',
           }}
-          className="gpu relative aspect-[16/10] w-[86vw] max-w-5xl overflow-hidden bg-ink-deep shadow-[0_60px_180px_-40px_rgba(0,0,0,0.95)] ring-1 ring-white/12"
+          className="gpu relative aspect-[16/10] w-[88vw] max-w-5xl overflow-hidden bg-ink-deep shadow-[0_60px_180px_-40px_rgba(0,0,0,0.95)] ring-1 ring-white/12"
         >
           {/* Mosaic of the four projects */}
           <motion.div

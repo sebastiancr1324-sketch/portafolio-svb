@@ -310,17 +310,6 @@
     backface-visibility: hidden;
   }
 
-  /* Seamless ticker: two identical tracks run side by side, so the -50%
-     jump lands exactly on the copy of the first. */
-  @keyframes marquee {
-    from {
-      transform: translate3d(0, 0, 0);
-    }
-    to {
-      transform: translate3d(-100%, 0, 0);
-    }
-  }
-
   /* Halo ring behind the closing CTA, scaling and fading out on a loop. */
   @keyframes cta-halo {
     0% {

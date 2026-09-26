@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import Aurora from './Aurora'
 import PillButton from './PillButton'
 import SplitText from './SplitText'
-import { HERO_MARQUEE, WHATSAPP_URL } from '../data/site'
+import { WHATSAPP_URL } from '../data/site'
 
 /** Headline broken into lines so each can carry its own weight and timing. */
 const HEADLINE = [
@@ -11,11 +11,17 @@ const HEADLINE = [
   { text: 'visitantes en clientes.', tone: 'peach' },
 ]
 
-export default function Hero() {
+/**
+ * Hero — the first screen.
+ *
+ * `ready` is held false until the preloader has finished, so the entrance
+ * animation plays into a settled page instead of fighting the loader.
+ */
+export default function Hero({ ready = true }) {
   return (
     <section
       id="top"
-      className="relative isolate flex min-h-svh flex-col justify-center overflow-hidden pt-32 pb-10"
+      className="relative isolate flex min-h-svh flex-col justify-center overflow-hidden pt-32 pb-20"
     >
       {/* Aurora canvas sits on a base gradient so the section is never flat,
           even where WebGL is unavailable or the effect is disabled. */}
@@ -31,13 +37,19 @@ export default function Hero() {
         <Aurora colorA="#1E3A5F" colorB="#E8B4A0" intensity={0.95} />
       </div>
 
-      {/* Watermark: oversized monogram, 4% opacity, behind everything. */}
+      {/* Watermark: centred at every breakpoint, so it never bleeds off the
+          top edge on narrow screens. The wrapper clips symmetrically, so on
+          very narrow screens the wordmark bleeds equally on both sides. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-[6vh] -right-[6vw] -z-10 select-none font-display leading-none text-bone/[0.04]"
-        style={{ fontSize: 'clamp(18rem, 46vw, 44rem)' }}
+        className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden select-none"
       >
-        SVB
+        <span
+          className="font-display leading-none whitespace-nowrap text-bone/[0.04]"
+          style={{ fontSize: 'clamp(13rem, 42vw, 38rem)' }}
+        >
+          SVB
+        </span>
       </div>
 
       {/* Hairline grid, barely there. Adds structure without noise. */}
@@ -57,7 +69,7 @@ export default function Hero() {
         {/* Availability pill */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="mb-8 flex w-fit items-center gap-3 rounded-full bg-white/[0.04] py-2 pr-5 pl-3 ring-1 ring-white/10 backdrop-blur-md"
         >
@@ -82,10 +94,9 @@ export default function Hero() {
                 delay={0.25 + i * 0.13}
                 stagger={0.05}
                 className={
-                  line.tone === 'peach'
-                    ? 'text-gradient-peach'
-                    : 'text-bone'
+                  line.tone === 'peach' ? 'text-gradient-peach' : 'text-bone'
                 }
+                active={ready}
               />
             </span>
           ))}
@@ -94,7 +105,7 @@ export default function Hero() {
         {/* Sub + CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.9, delay: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
         >
@@ -119,40 +130,6 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
-
-      {/* Marquee strip */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
-        className="shell relative mt-16 border-t border-white/8 pt-6"
-        aria-hidden="true"
-      >
-        <div className="flex overflow-hidden">
-          <div className="flex shrink-0 animate-[marquee_38s_linear_infinite] items-center gap-10 pr-10">
-            {[...HERO_MARQUEE, ...HERO_MARQUEE].map((item, i) => (
-              <span
-                key={`${item}-${i}`}
-                className="font-mono text-[0.65rem] tracking-[0.28em] whitespace-nowrap text-slate-dim uppercase"
-              >
-                {item}
-                <span className="ml-10 text-peach/60">/</span>
-              </span>
-            ))}
-          </div>
-          <div className="flex shrink-0 animate-[marquee_38s_linear_infinite] items-center gap-10 pr-10">
-            {[...HERO_MARQUEE, ...HERO_MARQUEE].map((item, i) => (
-              <span
-                key={`b-${item}-${i}`}
-                className="font-mono text-[0.65rem] tracking-[0.28em] whitespace-nowrap text-slate-dim uppercase"
-              >
-                {item}
-                <span className="ml-10 text-peach/60">/</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </motion.div>
     </section>
   )
 }
