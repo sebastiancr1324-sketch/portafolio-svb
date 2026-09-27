@@ -1,83 +1,89 @@
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useRef } from 'react'
-import { PROJECTS } from '../data/projects'
+import { LogoMark } from './Logo'
 import { useIsMobile } from '../lib/hooks'
 import { useI18n } from '../lib/locale'
 
 /**
- * WallCell — one cell of the identity wall.
+ * PortalMark — the site's own monogram, alone on the slab.
  *
- * The cell owns its slice of the scroll run, so the four marks assemble one
- * after another instead of appearing at once. The offsets are read as a
- * diagonal across the 2x2 grid, which is what makes the wall feel sequenced
- * rather than random. Only opacity and transform are driven, so the whole
- * thing stays on the compositor while the slab is flying.
+ * Two hairline rings sit behind the mark and settle out of the perspective as
+ * the slab lands, so the composition reads as a target the viewer is flying
+ * into rather than a logo floating in a box. Rings first, then the mark, then
+ * the rule: the same logo -> rule -> resolve order the four-mark wall used, so
+ * both options feel like the same gesture.
  */
-function WallCell({ project, name, smooth, delay }) {
-  const at = 0.14 + delay
+function PortalMark({ smooth, tagline }) {
+  // Rings lead: they are the structure the mark arrives on. Both settle
+  // roughly 1.6x and 2.5x the mark's final size, so the target hugs the logo
+  // instead of floating in the middle of the slab.
+  const ringNear = useTransform(smooth, [0.04, 0.9], [0.8, 1], { clamp: true })
+  const ringFar = useTransform(smooth, [0.04, 0.9], [1.25, 1.05], { clamp: true })
+  const ringOpacity = useTransform(smooth, [0.04, 0.3, 1], [0, 1, 0.55], { clamp: true })
 
-  const logoOpacity = useTransform(smooth, [at, at + 0.28], [0, 1], { clamp: true })
-  const logoScale = useTransform(smooth, [at, at + 0.32], [1.22, 1], { clamp: true })
-  const logoY = useTransform(smooth, [at, at + 0.32], [20, 0], { clamp: true })
+  const markOpacity = useTransform(smooth, [0.2, 0.5], [0, 1], { clamp: true })
+  const markScale = useTransform(smooth, [0.2, 0.62], [0.86, 1], { clamp: true })
+  const markY = useTransform(smooth, [0.2, 0.62], [22, 0], { clamp: true })
 
-  // The hairline and the caption trail the mark, so the cell resolves as
-  // logo -> rule -> name instead of landing all at once.
-  const ruleScale = useTransform(smooth, [at + 0.08, at + 0.34], [0, 1], { clamp: true })
-  const captionOpacity = useTransform(smooth, [at + 0.16, at + 0.36], [0, 1], { clamp: true })
-  const captionY = useTransform(smooth, [at + 0.16, at + 0.36], [6, 0], { clamp: true })
+  const ruleScale = useTransform(smooth, [0.34, 0.72], [0, 1], { clamp: true })
+  const ruleOpacity = useTransform(smooth, [0.34, 0.6], [0, 1], { clamp: true })
 
-  // A whisper of accent light behind each mark, so the wall reads as lit
-  // rather than as four flat stickers on a dark plate.
-  const glow = useTransform(smooth, [at + 0.1, at + 0.5], [0, 1], { clamp: true })
+  // The tagline lands last, so the composition resolves mark -> rule -> line.
+  const taglineOpacity = useTransform(smooth, [0.46, 0.78], [0, 1], { clamp: true })
+  const taglineY = useTransform(smooth, [0.46, 0.78], [10, 0], { clamp: true })
+  const taglineScale = useTransform(smooth, [0.46, 0.78], [0.97, 1], { clamp: true })
 
   return (
-    <div className="relative flex flex-col items-center justify-center gap-3 overflow-hidden sm:gap-4">
+    <div className="absolute inset-0 flex items-center justify-center">
+      {/* Rings */}
+      <motion.div style={{ opacity: ringOpacity }} className="absolute inset-0 flex items-center justify-center">
+        <motion.span
+          style={{ scale: ringFar }}
+          className="absolute aspect-square w-[56%] rounded-full ring-1 ring-white/8"
+        />
+        <motion.span
+          style={{ scale: ringNear }}
+          className="absolute aspect-square w-[38%] rounded-full ring-1 ring-white/12"
+        />
+      </motion.div>
+
+      {/* Accent light behind the mark */}
       <motion.div
         aria-hidden="true"
-        style={{ opacity: glow }}
-        className="pointer-events-none absolute inset-0"
+        style={{ opacity: markOpacity }}
+        className="pointer-events-none absolute inset-0 flex items-center justify-center"
       >
         <div
-          className="h-full w-full"
+          className="h-[58%] w-[58%] rounded-full"
           style={{
             background:
-              'radial-gradient(58% 58% at 50% 44%, rgba(232,180,160,0.11) 0%, transparent 72%)',
+              'radial-gradient(circle, rgba(232,180,160,0.16) 0%, rgba(30,58,95,0.30) 45%, transparent 72%)',
+            filter: 'blur(18px)',
           }}
         />
       </motion.div>
 
-      {/* Rule that draws itself across the cell as the mark settles. */}
-      <motion.span
-        aria-hidden="true"
-        style={{ scaleX: ruleScale }}
-        className="absolute inset-x-[16%] top-0 h-px origin-left bg-linear-to-r from-transparent via-peach/45 to-transparent"
-      />
-
-      {/* The plate: a uniform surface so a black badge reads as loudly as a
-          coloured one, which is the whole point of a logo wall. */}
+      {/* Mark + rule. The column carries a definite height so the mark's
+          percentage resolves against the slab instead of collapsing. */}
       <motion.div
-        style={{ opacity: logoOpacity, scale: logoScale, y: logoY }}
-        className="relative flex aspect-square h-[46%] max-h-56 items-center justify-center rounded-2xl bg-white/[0.05] p-2.5 ring-1 ring-white/12 sm:h-[62%] sm:p-4"
+        style={{ opacity: markOpacity, scale: markScale, y: markY }}
+        className="relative flex h-[72%] w-full flex-col items-center justify-center gap-4 sm:gap-7"
       >
-        <img
-          src={project.logo}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-contain"
+        <LogoMark className="aspect-square h-[36%] max-h-72 w-auto sm:h-[60%]" />
+
+        <motion.span
+          style={{ scaleX: ruleScale, opacity: ruleOpacity }}
+          className="h-px w-[38%] origin-left bg-linear-to-r from-transparent via-white/25 to-transparent sm:w-[min(20rem,58%)]"
         />
-      </motion.div>
 
-      <motion.div
-        style={{ opacity: captionOpacity, y: captionY }}
-        className="relative flex flex-col items-center gap-1"
-      >
-        <span className="font-mono text-[0.5rem] tracking-[0.24em] text-peach/85 uppercase">
-          {project.index}
-        </span>
-        <span className="font-mono text-[0.55rem] tracking-[0.16em] text-bone/65 uppercase">
-          {name}
-        </span>
+        {/* Tagline. Caption, not a heading: the mark above owns the hierarchy,
+            so this sits a step down in size, weight and opacity. */}
+        <motion.p
+          style={{ opacity: taglineOpacity, y: taglineY, scale: taglineScale }}
+          className="max-w-[20rem] text-center font-sans text-[0.72rem] font-medium tracking-[0.01em] text-peach/70 sm:max-w-[24rem] sm:text-lg"
+        >
+          {tagline}
+        </motion.p>
       </motion.div>
     </div>
   )
@@ -86,10 +92,9 @@ function WallCell({ project, name, smooth, delay }) {
 /**
  * PortalTransition — the 3D scroll-driven bridge between hero and portfolio.
  *
- * A small glass slab holds a wall of the four real project marks. As the
- * section scrolls, the slab scales, un-tilts and travels toward the camera
- * until it fills the viewport; the wall assembles on the way in and is
- * standing still by the time the slab lands.
+ * A small glass slab holds the site's own mark. As the section scrolls, the
+ * slab scales, un-tilts and travels toward the camera until it fills the
+ * viewport, with the mark resolving on the way in.
  *
  * Motion is retuned per breakpoint. On a phone the same values read as "far
  * away", because a narrow viewport makes a small object feel distant and the
@@ -105,7 +110,7 @@ export default function PortalTransition() {
   const ref = useRef(null)
   const reduce = useReducedMotion()
   const isMobile = useIsMobile()
-  const { t, dict } = useI18n()
+  const { t } = useI18n()
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -131,9 +136,9 @@ export default function PortalTransition() {
   const y = useTransform(smooth, [0, 1], [from.y, to.y])
   const opacity = useTransform(smooth, [0, 0.12], [0, 1])
   const radius = useTransform(smooth, [0, 1], [isMobile ? 22 : 28, 0])
-  // The wall starts over-scaled and settles, so the marks feel like they are
+  // The plate starts over-scaled and settles, so the mark feels like it is
   // rushing at the viewer rather than being revealed.
-  const wallScale = useTransform(smooth, [0, 1], [isMobile ? 1.5 : 1.24, 1])
+  const stageScale = useTransform(smooth, [0, 1], [isMobile ? 1.4 : 1.14, 1])
   const glowOpacity = useTransform(smooth, [0, 0.5, 1], [0.9, 0.35, 0])
   const hintOpacity = useTransform(smooth, [0, 0.18], [1, 0])
 
@@ -188,21 +193,8 @@ export default function PortalTransition() {
           }}
           className="gpu relative aspect-[16/10] w-[88vw] max-w-5xl overflow-hidden bg-ink-deep shadow-[0_60px_180px_-40px_rgba(0,0,0,0.95)] ring-1 ring-white/12"
         >
-          {/* Wall of the four project marks */}
-          <motion.div
-            style={{ scale: wallScale }}
-            className="absolute inset-0 grid grid-cols-2 gap-px bg-white/8"
-          >
-            {PROJECTS.map((project, i) => (
-              <WallCell
-                key={project.id}
-                project={project}
-                name={dict.projects[project.id].name}
-                smooth={smooth}
-                // Diagonal origin: top-left, then across, then down.
-                delay={0.075 * ((i % 2) + Math.floor(i / 2))}
-              />
-            ))}
+          <motion.div style={{ scale: stageScale }} className="absolute inset-0">
+            <PortalMark smooth={smooth} tagline={t('portal.tagline')} />
           </motion.div>
 
           {/* Screen sheen */}

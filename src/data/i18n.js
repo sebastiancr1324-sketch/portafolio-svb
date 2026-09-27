@@ -58,7 +58,11 @@ export const DICT = {
       ctaPrimary: 'Iniciar proyecto',
       ctaSecondary: 'Ver proyectos',
     },
-    portal: { hint: 'Deslizá para ver el trabajo', label: 'Portafolio' },
+    portal: {
+      hint: 'Deslizá para ver el trabajo',
+      label: 'Portafolio',
+      tagline: 'Cada proyecto, resuelto a medida.',
+    },
     work: {
       eyebrow: 'Trabajo reciente',
       title: 'Portafolio',
@@ -207,7 +211,11 @@ export const DICT = {
       ctaPrimary: 'Start a project',
       ctaSecondary: 'See the work',
     },
-    portal: { hint: 'Scroll to see the work', label: 'Portfolio' },
+    portal: {
+      hint: 'Scroll to see the work',
+      label: 'Portfolio',
+      tagline: 'Every project, built to measure.',
+    },
     work: {
       eyebrow: 'Recent work',
       title: 'Portfolio',
