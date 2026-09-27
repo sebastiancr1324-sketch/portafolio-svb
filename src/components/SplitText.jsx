@@ -1,5 +1,5 @@
-import { motion, useReducedMotion } from 'motion/react'
-import { useMemo } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
+import { useMemo, useRef } from 'react'
 
 /**
  * `motion` is a Proxy that builds a brand-new component on every property
@@ -23,6 +23,13 @@ const ALLOWED_TAGS = new Set(['span', 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'stron
  * each fragment masked by an overflow-hidden wrapper so it slides up
  * from behind a clipping edge.
  *
+ * The viewport trigger watches the *unmasked* root, never the fragments:
+ * a fragment parked at `y: 105%` sits entirely outside its mask's clip,
+ * and IntersectionObserver intersects a target with the clip rects of its
+ * ancestors, so observing a fragment reports zero intersection forever and
+ * the heading stays invisible. One observer on the root behaves the same
+ * for every word and fires reliably.
+ *
  * Accessibility: the visual fragments are aria-hidden and the whole
  * sentence is exposed once via a visually-hidden copy, so screen
  * readers never announce a word at a time.
@@ -44,23 +51,22 @@ export default function SplitText({
   const reduce = useReducedMotion()
   const Tag = ALLOWED_TAGS.has(as) ? as : 'span'
   const MotionTag = motionTag(Tag)
+  const rootRef = useRef(null)
+  const inView = useInView(rootRef, { once, amount })
 
   const units = useMemo(() => {
     if (!text) return []
     return by === 'char' ? Array.from(text) : text.split(' ')
   }, [text, by])
 
-  const anim =
-    start === 'mount'
-      ? {
-          // Parked in the hidden state until `active` flips, so a gated
-          // headline does not animate in behind the preloader.
-          animate: active ? { y: '0%', opacity: 1 } : { y: '105%', opacity: 0 },
-        }
-      : { whileInView: { y: '0%', opacity: 1 }, viewport: { once, amount } }
+  // `mount` is gated by `active` so a headline can wait for the preloader;
+  // every other mode is released by the root entering the viewport.
+  const shown = start === 'mount' ? active : inView
+  const hidden = { y: '105%', opacity: 0 }
+  const visible = { y: '0%', opacity: 1 }
 
   return (
-    <Tag className={className}>
+    <Tag ref={rootRef} className={className}>
       <span className="sr-only">{text}</span>
       <span aria-hidden="true" className="inline-block">
         {units.map((unit, i) => (
@@ -72,13 +78,13 @@ export default function SplitText({
           >
             <MotionTag
               className="inline-block will-change-transform"
-              initial={reduce ? { y: '0%', opacity: 1 } : { y: '105%', opacity: 0 }}
+              initial={reduce ? visible : hidden}
+              animate={reduce ? visible : shown ? visible : hidden}
               transition={{
                 duration: reduce ? 0 : duration,
                 delay: delay + i * (reduce ? 0 : stagger),
                 ease: [0.16, 1, 0.3, 1],
               }}
-              {...anim}
             >
               {unit}
             </MotionTag>
