@@ -116,7 +116,8 @@ export default function About() {
                 <SplitText
                   as="span"
                   text={titleBottom}
-                  className="block text-gradient-peach"
+                  className="block"
+                  fragmentClassName="text-gradient-peach"
                 />
               </h2>
 

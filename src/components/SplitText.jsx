@@ -42,6 +42,10 @@ export default function SplitText({
   stagger = 0.045,
   duration = 0.9,
   className = '',
+  /** Applied to each animated fragment, not the root. Gradient text needs this:
+      a composited fragment is not painted by an ancestor's background-clip:text,
+      so `background-clip: text` has to live on the fragment that moves. */
+  fragmentClassName = '',
   start = 'whileInView',
   once = true,
   amount = 0.4,
@@ -77,7 +81,7 @@ export default function SplitText({
             style={by === 'word' && i < units.length - 1 ? { marginRight: '0.25em' } : undefined}
           >
             <MotionTag
-              className="inline-block will-change-transform"
+              className={`inline-block will-change-transform ${fragmentClassName}`}
               initial={reduce ? visible : hidden}
               animate={reduce ? visible : shown ? visible : hidden}
               transition={{

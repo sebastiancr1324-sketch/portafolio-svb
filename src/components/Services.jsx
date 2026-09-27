@@ -48,7 +48,8 @@ export default function Services() {
                   as="span"
                   text={titleBottom}
                   by="word"
-                  className="block text-gradient-peach"
+                  className="block"
+                  fragmentClassName="text-gradient-peach"
                 />
               </h2>
 
