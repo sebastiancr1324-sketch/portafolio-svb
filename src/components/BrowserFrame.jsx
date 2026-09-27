@@ -35,8 +35,9 @@ export default function BrowserFrame({ url, logo, logoType, children, className 
         </div>
       </div>
 
-      {/* Viewport */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-navy-deep">
+      {/* Viewport. The ratio matches the 1321x646 project screenshots, so
+          `object-cover` never eats the top or bottom of a capture. */}
+      <div className="relative aspect-[1321/646] overflow-hidden bg-navy-deep">
         {children}
         {/* Faint top-edge sheen sells the "glass" surface. */}
         <div
