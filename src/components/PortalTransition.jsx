@@ -2,6 +2,7 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'mo
 import { useRef } from 'react'
 import { PROJECTS } from '../data/projects'
 import { useIsMobile } from '../lib/hooks'
+import { useI18n } from '../lib/locale'
 
 /**
  * PortalTransition — the 3D scroll-driven bridge between hero and portfolio.
@@ -25,6 +26,7 @@ export default function PortalTransition() {
   const ref = useRef(null)
   const reduce = useReducedMotion()
   const isMobile = useIsMobile()
+  const { t, dict } = useI18n()
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -62,7 +64,7 @@ export default function PortalTransition() {
       <section className="relative border-t border-white/8 py-24">
         <div className="shell text-center">
           <span className="font-mono text-[0.65rem] tracking-[0.3em] text-slate-dim uppercase">
-            Portafolio
+            {t('portal.label')}
           </span>
         </div>
       </section>
@@ -129,7 +131,7 @@ export default function PortalTransition() {
                   }}
                 />
                 <span className="absolute bottom-3 left-3 font-mono text-[0.55rem] tracking-[0.2em] text-bone/80 uppercase">
-                  {project.index} — {project.name}
+                  {project.index} — {dict.projects[project.id].name}
                 </span>
               </div>
             ))}
@@ -151,7 +153,7 @@ export default function PortalTransition() {
           className="pointer-events-none absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3"
         >
           <span className="font-mono text-[0.6rem] tracking-[0.3em] text-slate uppercase">
-            Deslizá para ver el trabajo
+            {t('portal.hint')}
           </span>
           <span className="relative h-10 w-px overflow-hidden bg-white/15">
             <motion.span

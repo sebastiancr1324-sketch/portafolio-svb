@@ -1,9 +1,11 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useRef, useState } from 'react'
 import FullMenu from './FullMenu'
+import LanguageToggle from './LanguageToggle'
 import Logo from './Logo'
 import PillButton from './PillButton'
 import { WHATSAPP_URL } from '../data/site'
+import { useI18n } from '../lib/locale'
 
 /**
  * Header — floating glass bar that retracts on scroll-down and returns on
@@ -15,6 +17,7 @@ export default function Header() {
   const [hidden, setHidden] = useState(false)
   const { scrollY } = useScroll()
   const lastY = useRef(0)
+  const { t } = useI18n()
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     setCondensed(y > 48)
@@ -51,20 +54,22 @@ export default function Header() {
         >
           <a
             href="#top"
-            aria-label="SVB — volver al inicio"
+            aria-label={t('ui.backToTop')}
             className="rounded-full transition-opacity duration-500 hover:opacity-70"
           >
             <Logo compact={condensed} />
           </a>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            <LanguageToggle />
+
             {/* Circular menu trigger — the icon morphs into an X. */}
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
               aria-controls="menu-fullscreen"
-              aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-label={menuOpen ? t('ui.closeMenu') : t('ui.openMenu')}
               className="hairline group relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/[0.03] transition-colors duration-500 hover:bg-white/[0.08] sm:h-11 sm:w-11"
             >
               <span className="relative block h-3 w-4">
@@ -97,7 +102,7 @@ export default function Header() {
                     glow
                     className="whitespace-nowrap"
                   >
-                    Iniciar proyecto
+                    {t('hero.ctaPrimary')}
                   </PillButton>
                 </motion.div>
               )}

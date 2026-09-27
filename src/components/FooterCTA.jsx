@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import BrandMark from './BrandMark'
 import SplitText from './SplitText'
 import { INSTAGRAM_URL, EMAIL, OWNER, WHATSAPP_URL } from '../data/site'
+import { useI18n } from '../lib/locale'
 
 /**
  * GiantCta — the closing action.
@@ -12,6 +13,7 @@ import { INSTAGRAM_URL, EMAIL, OWNER, WHATSAPP_URL } from '../data/site'
  */
 function GiantCta() {
   const reduce = useReducedMotion()
+  const { t } = useI18n()
 
   return (
     <motion.div
@@ -25,7 +27,7 @@ function GiantCta() {
         href={WHATSAPP_URL}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Escribime por WhatsApp para iniciar tu proyecto (se abre en una pestaña nueva)"
+        aria-label={t('ui.ctaWhatsapp')}
         className="group relative isolate inline-flex items-center gap-4 overflow-hidden rounded-full bg-peach px-10 py-6 text-ink shadow-[0_24px_80px_-20px_rgba(232,180,160,0.6)] transition-transform duration-700 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-1.5 hover:shadow-[0_34px_110px_-18px_rgba(232,180,160,0.8)] active:translate-y-0 sm:px-14 sm:py-7"
       >
         {/* Breathing halo behind the pill. */}
@@ -44,7 +46,7 @@ function GiantCta() {
         />
 
         <span className="font-display text-lg tracking-[0.02em] uppercase sm:text-2xl">
-          Iniciar proyecto
+          {t('hero.ctaPrimary')}
         </span>
 
         {/* WhatsApp glyph */}
@@ -66,6 +68,7 @@ function GiantCta() {
  * A slim strip below carries the only remaining metadata.
  */
 export default function FooterCTA() {
+  const { t } = useI18n()
   return (
     <footer
       id="contacto"
@@ -89,26 +92,22 @@ export default function FooterCTA() {
           transition={{ duration: 0.6 }}
           className="font-mono text-[0.62rem] tracking-[0.3em] text-peach uppercase"
         >
-          Siguiente paso
+          {t('cta.eyebrow')}
         </motion.span>
 
-        <h2 className="mt-5 max-w-[18ch] font-display text-[clamp(2.5rem,8.5vw,7rem)] leading-[0.92] text-bone">
-          <SplitText
-            as="span"
-            text="¿Listo para destacar tu negocio en internet?"
-            by="word"
-            className="block"
-          />
+        <h2 className="mt-3.5 max-w-[18ch] font-display text-[clamp(2.5rem,8.5vw,7rem)] leading-[0.9] text-bone">
+          <SplitText as="span" text={t('cta.title')} by="word" className="block" />
         </h2>
 
         {/* Brand mark bridges the headline and the ask, so the block reads as
-            one composition instead of two stacked text groups. */}
+            one composition instead of two stacked text groups. Kept close to
+            the headline so the stack reads as tight, not padded. */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5 }}
-          className="mt-7 flex items-center gap-4 sm:mt-8"
+          className="mt-4 flex items-center gap-4 sm:mt-5"
         >
           <span aria-hidden="true" className="h-px w-10 bg-linear-to-r from-transparent to-white/20 sm:w-16" />
           <BrandMark className="h-11 w-11 sm:h-14 sm:w-14" duration={0.95} />
@@ -116,8 +115,7 @@ export default function FooterCTA() {
         </motion.div>
 
         <p className="mt-6 max-w-md text-base leading-relaxed text-slate md:text-lg">
-          Contame qué tenés en mente y te paso una idea de cómo se vería tu
-          proyecto.
+          {t('cta.body')}
         </p>
 
         <div className="mt-9">
@@ -125,7 +123,7 @@ export default function FooterCTA() {
         </div>
 
         <p className="mt-4 font-mono text-[0.6rem] tracking-[0.2em] text-slate-dim uppercase">
-          Respuesta en menos de 24 horas
+          {t('cta.response')}
         </p>
       </div>
 

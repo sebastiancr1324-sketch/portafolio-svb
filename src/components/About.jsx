@@ -1,11 +1,13 @@
 import { motion } from 'motion/react'
 import SplitText from './SplitText'
-import { BIO, DRIVERS, FACTS, STATS, TECH } from '../data/about'
+import { CURRENT_CITY, FACTS } from '../data/about'
+import { useI18n } from '../lib/locale'
 
 /**
  * Origin → current location. Small typographic device, no map image needed.
  */
 function Journey() {
+  const { t } = useI18n()
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -26,14 +28,18 @@ function Journey() {
           strokeWidth="1.5"
           className="h-3.5 w-3.5 text-peach"
         >
-          <path d="M4 12h15M14 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M4 12h15M14 6l6 6-6 6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </span>
       <span className="font-display text-2xl text-peach md:text-3xl">
-        CABA
+        {CURRENT_CITY}
       </span>
       <span className="w-full font-mono text-[0.58rem] tracking-[0.2em] text-slate-dim uppercase sm:w-auto sm:ml-auto">
-        {FACTS.originCountry} · {FACTS.yearsInArgentina} años en Argentina
+        {t('about.journeyNote')(FACTS.yearsInArgentina)}
       </span>
     </motion.div>
   )
@@ -69,6 +75,13 @@ function Stat({ value, label, note, delay }) {
  * ask converts. Sticky heading on desktop, stacked on mobile.
  */
 export default function About() {
+  const { t } = useI18n()
+  const [titleTop, titleBottom] = t('about.titleLines')
+  const bio = t('about.bio')
+  const stats = t('about.stats')
+  const drivers = t('about.drivers')
+  const tech = t('tech')
+
   return (
     <section
       id="sobre-mi"
@@ -95,14 +108,14 @@ export default function About() {
                 transition={{ duration: 0.6 }}
                 className="font-mono text-[0.62rem] tracking-[0.3em] text-peach uppercase"
               >
-                Sobre mí
+                {t('about.eyebrow')}
               </motion.span>
 
               <h2 className="mt-4 font-display text-[clamp(2.5rem,6vw,4.5rem)] text-bone">
-                <SplitText as="span" text="Detrás de" className="block" />
+                <SplitText as="span" text={titleTop} className="block" />
                 <SplitText
                   as="span"
-                  text="cada proyecto"
+                  text={titleBottom}
                   className="block text-gradient-peach"
                 />
               </h2>
@@ -111,10 +124,10 @@ export default function About() {
             </div>
           </div>
 
-          {/* Bio + drivers. */}
+          {/* Bio + stats + drivers. */}
           <div className="lg:col-span-7">
             <div className="space-y-6">
-              {BIO.map((paragraph, i) => (
+              {bio.map((paragraph, i) => (
                 <motion.p
                   key={paragraph.slice(0, 24)}
                   initial={{ opacity: 0, y: 24 }}
@@ -137,7 +150,7 @@ export default function About() {
             </div>
 
             <ul className="mt-12 grid gap-8 sm:grid-cols-3">
-              {STATS.map((stat, i) => (
+              {stats.map((stat, i) => (
                 <li key={stat.label}>
                   <Stat {...stat} delay={i * 0.1} />
                 </li>
@@ -154,12 +167,12 @@ export default function About() {
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="font-mono text-[0.6rem] tracking-[0.24em] text-slate-dim uppercase"
               >
-                Con qué trabajo
+                {t('about.techLabel')}
               </motion.h3>
               <ul className="mt-5 flex flex-wrap gap-2">
-                {TECH.map((tech, i) => (
+                {tech.map((item, i) => (
                   <motion.li
-                    key={tech}
+                    key={item}
                     initial={{ opacity: 0, y: 14 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.4 }}
@@ -168,16 +181,16 @@ export default function About() {
                       delay: i * 0.045,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="rounded-full bg-white/[0.04] px-4 py-2 font-mono text-[0.62rem] tracking-[0.12em] text-mist uppercase ring-1 ring-white/8 transition-colors duration-500 hover:ring-peach/40 hover:text-peach"
+                    className="rounded-full bg-white/[0.04] px-4 py-2 font-mono text-[0.62rem] tracking-[0.12em] text-mist uppercase ring-1 ring-white/8 transition-colors duration-500 hover:text-peach hover:ring-peach/40"
                   >
-                    {tech}
+                    {item}
                   </motion.li>
                 ))}
               </ul>
             </div>
 
             <ul className="mt-16 flex flex-col">
-              {DRIVERS.map((driver, i) => (
+              {drivers.map((driver, i) => (
                 <motion.li
                   key={driver.title}
                   initial={{ opacity: 0, y: 24 }}
@@ -192,7 +205,7 @@ export default function About() {
                 >
                   <div className="flex items-baseline gap-5">
                     <span className="font-mono text-[0.6rem] text-peach/70 transition-colors duration-500 group-hover:text-peach">
-                      0{i + 1}
+                      {String(i + 1).padStart(2, '0')}
                     </span>
                     <div>
                       <h3 className="font-display text-xl text-bone">

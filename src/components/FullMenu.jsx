@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef } from 'react'
 import SplitText from './SplitText'
 import { EMAIL, INSTAGRAM_URL, NAV_LINKS, WHATSAPP_URL } from '../data/site'
+import { useI18n } from '../lib/locale'
 
 const MOTION = {
   hidden: { y: '-110%' },
@@ -20,6 +21,7 @@ export default function FullMenu({ open, onClose }) {
   const panelRef = useRef(null)
   const closeRef = useRef(null)
   const restoreRef = useRef(null)
+  const { t } = useI18n()
 
   useEffect(() => {
     if (!open) return
@@ -79,7 +81,7 @@ export default function FullMenu({ open, onClose }) {
           id="menu-fullscreen"
           role="dialog"
           aria-modal="true"
-          aria-label="Menú de navegación"
+          aria-label={t('ui.menuDialog')}
           variants={MOTION}
           initial="hidden"
           animate="visible"
@@ -104,7 +106,7 @@ export default function FullMenu({ open, onClose }) {
               onClick={onClose}
               className="absolute top-24 right-0 flex items-center gap-3 rounded-full px-4 py-2 font-mono text-[0.65rem] tracking-[0.2em] text-slate uppercase transition-colors duration-500 hover:text-peach"
             >
-              Cerrar
+              {t('ui.closeMenu')}
               <span aria-hidden="true" className="relative block h-3 w-3">
                 <span className="absolute top-1/2 left-0 h-px w-full rotate-45 bg-current" />
                 <span className="absolute top-1/2 left-0 h-px w-full -rotate-45 bg-current" />
@@ -112,7 +114,7 @@ export default function FullMenu({ open, onClose }) {
             </button>
 
             {/* Primary links, revealed word by word. */}
-            <nav aria-label="Navegación principal" className="flex flex-col">
+            <nav aria-label={t('ui.mainNav')} className="flex flex-col">
               {NAV_LINKS.map((link, i) => (
                 <div key={link.href} className="border-b border-white/8">
                   <a
@@ -125,7 +127,7 @@ export default function FullMenu({ open, onClose }) {
                     </span>
                     <SplitText
                       as="span"
-                      text={link.label}
+                      text={t(`nav.${link.key}`)}
                       start="mount"
                       delay={0.12 + i * 0.09}
                       className="font-display text-[clamp(2.25rem,9vw,5.5rem)] leading-[0.9] text-bone transition-colors duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:text-peach"
@@ -149,7 +151,7 @@ export default function FullMenu({ open, onClose }) {
             <div className="mt-auto flex flex-col gap-8 pt-14 sm:flex-row sm:items-end sm:justify-between">
               <div className="flex flex-col gap-4">
                 <span className="font-mono text-[0.6rem] tracking-[0.24em] text-slate-dim uppercase">
-                  Contacto directo
+                  {t('ui.directContact')}
                 </span>
                 <a
                   href={WHATSAPP_URL}
@@ -176,8 +178,7 @@ export default function FullMenu({ open, onClose }) {
               </div>
 
               <p className="max-w-xs text-sm leading-relaxed text-slate-dim">
-                Desarrollo web a medida para negocios que necesitan aparecer mejor en
-                internet y recibir clientes por WhatsApp.
+                {t('ui.menuTagline')}
               </p>
             </div>
           </div>

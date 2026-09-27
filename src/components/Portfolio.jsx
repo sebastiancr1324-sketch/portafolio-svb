@@ -3,6 +3,7 @@ import BrowserFrame from './BrowserFrame'
 import PillButton from './PillButton'
 import TiltedCard from './TiltedCard'
 import { PROJECTS } from '../data/projects'
+import { useI18n } from '../lib/locale'
 
 /** Section heading. */
 function SectionHeading({ eyebrow, title, count }) {
@@ -36,6 +37,9 @@ function SectionHeading({ eyebrow, title, count }) {
 }
 
 function ProjectCard({ project, index }) {
+  const { t } = useI18n()
+  // Copy for this project in the active language.
+  const copy = t(`projects.${project.id}`)
   const wide = index % 2 === 0
   const Wrapper = project.url ? 'a' : 'div'
 
@@ -56,7 +60,7 @@ function ProjectCard({ project, index }) {
                 href: project.url,
                 target: '_blank',
                 rel: 'noopener noreferrer',
-                'aria-label': `Visitar el sitio de ${project.name} (se abre en una pestaña nueva)`,
+                'aria-label': t('ui.viewProject')(copy.name),
               }
             : {})}
           className="block rounded-xl"
@@ -68,7 +72,7 @@ function ProjectCard({ project, index }) {
           >
             <img
               src={project.shot}
-              alt={`Captura de pantalla del sitio ${project.name}`}
+              alt={t('ui.shot')(copy.name)}
               loading="lazy"
               decoding="async"
               className="h-full w-full object-cover transition-transform duration-[1.2s] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.04]"
@@ -85,20 +89,20 @@ function ProjectCard({ project, index }) {
           </span>
           <span className="h-px flex-1 bg-white/10" aria-hidden="true" />
           <span className="font-mono text-[0.6rem] tracking-[0.16em] text-slate-dim uppercase">
-            {project.category}
+            {copy.category}
           </span>
         </div>
 
         <h3 className="mt-4 font-display text-[clamp(1.6rem,3.2vw,2.6rem)] text-bone">
-          {project.name}
+          {copy.name}
         </h3>
 
         <p className="mt-3 max-w-prose text-sm leading-relaxed text-slate md:text-base">
-          {project.description}
+          {copy.description}
         </p>
 
         <div className="mt-6 flex flex-wrap items-center gap-2">
-          {project.tags.map((tag) => (
+          {copy.tags.map((tag) => (
             <span
               key={tag}
               className="rounded-full bg-white/[0.04] px-3 py-1.5 font-mono text-[0.58rem] tracking-[0.14em] text-slate uppercase ring-1 ring-white/8"
@@ -111,7 +115,7 @@ function ProjectCard({ project, index }) {
         <div className="mt-7 flex items-center">
           {project.url ? (
             <PillButton href={project.url} variant="ghost" size="sm" withArrow>
-              Ver sitio en vivo
+              {t('ui.liveSite')}
             </PillButton>
           ) : (
             <span className="inline-flex items-center gap-2.5 font-mono text-[0.62rem] tracking-[0.18em] text-slate-dim uppercase">
@@ -119,7 +123,7 @@ function ProjectCard({ project, index }) {
                 className="h-1.5 w-1.5 rounded-full bg-slate-dim"
                 aria-hidden="true"
               />
-              Sitio en preparación
+              {t('ui.inProgress')}
             </span>
           )}
         </div>
@@ -136,13 +140,14 @@ function ProjectCard({ project, index }) {
  * rather than a uniform card grid.
  */
 export default function Portfolio() {
+  const { t } = useI18n()
   return (
     <section id="proyectos" className="relative scroll-mt-24 py-28 md:py-36">
       <div className="shell">
         <SectionHeading
-          eyebrow="Trabajo reciente"
-          title="Portafolio"
-          count={`${String(PROJECTS.length).padStart(2, '0')} proyectos`}
+          eyebrow={t('work.eyebrow')}
+          title={t('work.title')}
+          count={t('work.count')(PROJECTS.length)}
         />
 
         <div className="grid grid-cols-1 gap-x-8 gap-y-20 lg:grid-cols-12 lg:gap-y-28">

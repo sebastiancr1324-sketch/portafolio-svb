@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
-import { SERVICES } from '../data/projects'
 import SplitText from './SplitText'
+import { useI18n } from '../lib/locale'
 
 /**
  * Services — a numbered editorial list rather than a card grid.
@@ -8,6 +8,10 @@ import SplitText from './SplitText'
  * four items read as one confident block.
  */
 export default function Services() {
+  const { t } = useI18n()
+  const [titleTop, titleBottom] = t('services.titleLines')
+  const items = t('services.items')
+
   return (
     <section
       id="servicios"
@@ -35,31 +39,30 @@ export default function Services() {
                 transition={{ duration: 0.6 }}
                 className="font-mono text-[0.62rem] tracking-[0.3em] text-peach uppercase"
               >
-                Qué hago
+                {t('services.eyebrow')}
               </motion.span>
 
               <h2 className="mt-4 font-display text-[clamp(2.5rem,6vw,4.5rem)] text-bone">
-                <SplitText as="span" text="Del primer" by="word" className="block" />
+                <SplitText as="span" text={titleTop} by="word" className="block" />
                 <SplitText
                   as="span"
-                  text="clic a la venta"
+                  text={titleBottom}
                   by="word"
                   className="block text-gradient-peach"
                 />
               </h2>
 
               <p className="mt-6 max-w-sm text-base leading-relaxed text-slate">
-                Construyo sitios pensados para una sola cosa: que alguien que
-                llega desde un anuncio termine hablando con vos por WhatsApp.
+                {t('services.lead')}
               </p>
             </div>
           </div>
 
           {/* Right: the list. */}
           <ul className="lg:col-span-7">
-            {SERVICES.map((service, i) => (
+            {items.map((service, i) => (
               <motion.li
-                key={service.index}
+                key={service.title}
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
@@ -72,7 +75,7 @@ export default function Services() {
               >
                 <div className="flex items-start gap-6 md:gap-10">
                   <span className="mt-1 font-display text-2xl text-peach/70 transition-colors duration-500 group-hover:text-peach md:text-3xl">
-                    {service.index}
+                    {String(i + 1).padStart(2, '0')}
                   </span>
                   <div className="flex-1">
                     <h3 className="font-display text-xl text-bone md:text-2xl">

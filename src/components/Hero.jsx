@@ -3,13 +3,7 @@ import Aurora from './Aurora'
 import PillButton from './PillButton'
 import SplitText from './SplitText'
 import { WHATSAPP_URL } from '../data/site'
-
-/** Headline broken into lines so each can carry its own weight and timing. */
-const HEADLINE = [
-  { text: 'Desarrollo web a medida', tone: 'bone' },
-  { text: 'diseñado para convertir', tone: 'bone' },
-  { text: 'visitantes en clientes.', tone: 'peach' },
-]
+import { useI18n } from '../lib/locale'
 
 /**
  * Hero — the first screen.
@@ -18,6 +12,10 @@ const HEADLINE = [
  * animation plays into a settled page instead of fighting the loader.
  */
 export default function Hero({ ready = true }) {
+  const { t } = useI18n()
+  // Headline lines carry their own weight and timing, so they animate in
+  // sequence rather than as one block.
+  const headline = t('hero.headline')
   return (
     <section
       id="top"
@@ -78,13 +76,13 @@ export default function Hero({ ready = true }) {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-peach" />
           </span>
           <span className="font-mono text-[0.6rem] tracking-[0.2em] text-mist uppercase">
-            Disponible para proyectos nuevos
+            {t('hero.available')}
           </span>
         </motion.div>
 
         {/* Headline */}
         <h1 className="max-w-[16ch] font-display text-[clamp(2.75rem,8.5vw,7.5rem)] leading-[0.9] tracking-[-0.02em]">
-          {HEADLINE.map((line, i) => (
+          {headline.map((line, i) => (
             <span key={line.text} className="split-line">
               <SplitText
                 as="span"
@@ -110,8 +108,7 @@ export default function Hero({ ready = true }) {
           className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
         >
           <p className="max-w-md text-base leading-relaxed text-slate lg:text-lg">
-            Desde landing pages hasta e-commerce. Soluciones escalables que hacen
-            crecer tu marca.
+            {t('hero.sub')}
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -122,10 +119,10 @@ export default function Hero({ ready = true }) {
               glow
               withArrow
             >
-              Iniciar proyecto
+              {t('hero.ctaPrimary')}
             </PillButton>
             <PillButton href="#proyectos" variant="outline" size="lg" withArrow>
-              Ver proyectos
+              {t('hero.ctaSecondary')}
             </PillButton>
           </div>
         </motion.div>

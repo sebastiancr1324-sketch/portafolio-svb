@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import BrandMark from './BrandMark'
+import { useI18n } from '../lib/locale'
 
 /** Never let the loader outlast this, however slow the connection is. */
 const MAX_MS = 2600
@@ -23,6 +24,7 @@ export default function Preloader({ onDone }) {
   const [progress, setProgress] = useState(0)
   const reduce = useReducedMotion()
   const finishedRef = useRef(false)
+  const { t } = useI18n()
 
   /* ---- real completion signals ---- */
   useEffect(() => {
@@ -176,7 +178,7 @@ export default function Preloader({ onDone }) {
           />
         </div>
         <div className="flex items-center justify-between font-mono text-[0.6rem] tracking-[0.24em] text-slate-dim uppercase">
-          <span>Cargando</span>
+            <span>{t('ui.loading')}</span>
           <span className="text-mist tabular-nums">
             {String(shown).padStart(3, '0')}
           </span>

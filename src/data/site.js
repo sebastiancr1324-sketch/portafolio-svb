@@ -8,16 +8,20 @@ export const EMAIL = 'sebastianvalecillosblanco@gmail.com'
 
 /** Full name used for SEO / structured data. */
 export const OWNER = {
-  name: 'Sebastian Valecillos Blanco',
+  name: 'Sebastian de Jesus Valecillos Blanco',
   initials: 'SVB',
   role: 'Desarrollador web',
   location: 'CABA, Argentina',
 }
 
 /** Anchor targets for the full-screen menu and in-page links. */
+/**
+ * Nav targets. `key` resolves to a label in src/data/i18n.js under `nav`,
+ * so the menu is translated rather than hardcoded.
+ */
 export const NAV_LINKS = [
-  { label: 'Servicios', href: '#servicios' },
-  { label: 'Proyectos', href: '#proyectos' },
-  { label: 'Sobre mí', href: '#sobre-mi' },
-  { label: 'Contacto', href: '#contacto' },
+  { key: 'services', href: '#servicios' },
+  { key: 'work', href: '#proyectos' },
+  { key: 'about', href: '#sobre-mi' },
+  { key: 'contact', href: '#contacto' },
 ]
