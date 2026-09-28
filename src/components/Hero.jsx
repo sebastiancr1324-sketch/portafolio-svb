@@ -107,7 +107,10 @@ export default function Hero({ ready = true }) {
           >
             <div className="relative mx-auto aspect-[3/2] w-full max-w-[24rem] sm:max-w-[28rem] lg:max-w-[460px] lg:aspect-square xl:max-w-[600px]">
               <ElectricLogo
-                src="/logo.svg"
+                // Base-aware: the site is served from a sub-path
+                // (/portafolio-svb/), so a root-absolute "/logo.svg" 404s
+                // there and the logo never draws.
+                src={`${import.meta.env.BASE_URL}logo.svg`}
                 color="#F4CDBB"
                 glowColor="#E8B4A0"
                 scale={0.8}
