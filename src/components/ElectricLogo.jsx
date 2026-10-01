@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
 
 import './ElectricLogo.css';
@@ -593,6 +593,17 @@ void main() {
 }
 `;
 
+/** Probed once per mount, before render, so the fallback paints straight away. */
+function supportsWebgl2() {
+  try {
+    const gl = document.createElement('canvas').getContext('webgl2');
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
+    return Boolean(gl);
+  } catch {
+    return false;
+  }
+}
+
 const ElectricLogo = ({
   src = BOLT,
   color = '#ecc7ff',
@@ -618,6 +629,9 @@ const ElectricLogo = ({
   const containerRef = useRef(null);
   const settingsRef = useRef(null);
   const shapeRef = useRef(null);
+  // No WebGL 2 (old phones, blocked GPU, some battery savers): show the plain
+  // logo instead of nothing.
+  const [unsupported] = useState(() => !supportsWebgl2());
 
   useEffect(() => {
     settingsRef.current = {
@@ -665,17 +679,25 @@ const ElectricLogo = ({
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return undefined;
+    if (!container || unsupported) return undefined;
 
-    const renderer = new Renderer({
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
-      alpha: true,
-      premultipliedAlpha: true,
-      antialias: false
-    });
+    // ogl's Renderer throws when the browser cannot create a WebGL context.
+    // Left uncaught, that error unmounts the whole app and the visitor gets a
+    // blank page, so it is contained here.
+    let renderer;
+    try {
+      renderer = new Renderer({
+        dpr: Math.min(window.devicePixelRatio || 1, 2),
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: false
+      });
+    } catch {
+      return undefined;
+    }
     const gl = renderer.gl;
-    if (!renderer.isWebgl2) {
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
+    if (!gl || !renderer.isWebgl2) {
+      gl?.getExtension('WEBGL_lose_context')?.loseContext();
       return undefined;
     }
     gl.clearColor(0, 0, 0, 0);
@@ -1013,9 +1035,13 @@ const ElectricLogo = ({
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     };
-  }, []);
+  }, [unsupported]);
 
-  return <div ref={containerRef} className={`electric-logo ${className}`.trim()} style={style} />;
+  return (
+    <div ref={containerRef} className={`electric-logo ${className}`.trim()} style={style}>
+      {unsupported && <img src={src || BOLT} alt="" className="electric-logo-fallback" />}
+    </div>
+  );
 };
 
 export default ElectricLogo;

@@ -11,3 +11,14 @@
 .electric-logo canvas {
   background: transparent !important;
 }
+
+/* Static logo shown when WebGL 2 is unavailable, sized like the traced mark. */
+.electric-logo-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 12%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(232, 180, 160, 0.45));
+}
