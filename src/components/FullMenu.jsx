@@ -167,13 +167,13 @@ export default function FullMenu({ open, onClose }) {
                   rel="noopener noreferrer"
                   className="hairline w-fit rounded-full px-6 py-3 font-mono text-[0.7rem] tracking-[0.18em] text-mist uppercase transition-colors duration-500 hover:text-peach"
                 >
-                  Instagram
+                  {t('cta.instagram')}
                 </a>
                 <a
                   href={`mailto:${EMAIL}`}
                   className="hairline w-fit rounded-full px-6 py-3 font-mono text-[0.7rem] tracking-[0.18em] text-mist uppercase transition-colors duration-500 hover:text-peach"
                 >
-                  Email
+                  {t('cta.email')}
                 </a>
               </div>
 

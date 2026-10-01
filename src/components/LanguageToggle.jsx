@@ -11,13 +11,12 @@ import { useI18n } from '../lib/locale'
  * motion read as one object moving rather than two states blinking.
  */
 export default function LanguageToggle({ className = '' }) {
-  const { locale, setLocale } = useI18n()
-  const other = locale === 'es' ? 'en' : 'es'
+  const { locale, setLocale, t } = useI18n()
 
   return (
     <div
       role="group"
-      aria-label={LOCALE_NAME[other]}
+      aria-label={t('ui.language')}
       className={`flex shrink-0 items-center gap-0.5 rounded-full bg-white/[0.03] p-0.5 ring-1 ring-white/8 ${className}`}
     >
       {LOCALES.map((code) => {
@@ -27,10 +26,14 @@ export default function LanguageToggle({ className = '' }) {
             key={code}
             type="button"
             onClick={() => setLocale(code)}
+            // aria-pressed already announces the selected state, in the
+            // reader's own language; the label only names the option.
             aria-pressed={active}
-            // Announced as "Español, selected" rather than the bare code.
-            aria-label={`${LOCALE_NAME[code]}${active ? ', seleccionado' : ''}`}
-            className="relative rounded-full px-2 py-1.5 font-mono text-[0.58rem] tracking-[0.12em] uppercase transition-colors duration-300"
+            aria-label={LOCALE_NAME[code]}
+            lang={code}
+            // The pill stays compact, but an invisible ::after stretches the
+            // tap target to 44px tall so it is easy to hit with a thumb.
+            className="relative rounded-full px-2 py-1.5 font-mono text-[0.58rem] tracking-[0.12em] uppercase transition-colors duration-300 after:absolute after:inset-x-0 after:-inset-y-[9px] after:content-['']"
           >
             {active && (
               <motion.span

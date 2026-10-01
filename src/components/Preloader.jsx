@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import BrandMark from './BrandMark'
 import { useI18n } from '../lib/locale'
 
@@ -22,13 +22,20 @@ export default function Preloader({ onDone }) {
   // can actually play out before the node is removed.
   const [phase, setPhase] = useState('loading')
   const [progress, setProgress] = useState(0)
+  // Every real signal is in. Tracked apart from `progress`, which is capped
+  // below 100% for display and so can never say "done" on its own.
+  const [loaded, setLoaded] = useState(false)
+  const [startedAt] = useState(() => performance.now())
   const reduce = useReducedMotion()
-  const finishedRef = useRef(false)
   const { t } = useI18n()
 
   /* ---- real completion signals ---- */
   useEffect(() => {
-    const images = Array.from(document.images)
+    // Lazy images only load once scrolled near, so waiting on them would hold
+    // the loader until the failsafe every single time.
+    const images = Array.from(document.images).filter(
+      (img) => img.loading !== 'lazy',
+    )
     const total = images.length
     let imagesDone = 0
     let fontsReady = false
@@ -40,6 +47,7 @@ export default function Preloader({ onDone }) {
         (imagePart + (fontsReady ? 1 : 0) + (windowReady ? 1 : 0)) / 3
       // The displayed number must never outrun what has actually loaded.
       setProgress((prev) => Math.max(prev, Math.min(0.97, real)))
+      if (real >= 1) setLoaded(true)
     }
 
     if (total === 0) imagesDone = 1
@@ -108,28 +116,22 @@ export default function Preloader({ onDone }) {
     return () => cancelAnimationFrame(raf)
   }, [phase])
 
-  /* ---- finish ---- */
+  /* ---- finish ----
+     Leave once everything is in and the minimum beat has passed, or at the
+     ceiling regardless. A single timer, re-armed only when `loaded` flips,
+     so the per-frame progress updates never pile up pending checks. */
   useEffect(() => {
-    if (phase !== 'loading' || finishedRef.current) return
-    const startedAt = performance.now()
-
-    const check = () => {
-      const elapsed = performance.now() - startedAt
-      const longEnough = elapsed >= MIN_MS
-      const loaded = progress >= 0.985
-      const timedOut = elapsed >= MAX_MS
-
-      if (!(longEnough && (loaded || timedOut))) {
-        const timer = setTimeout(check, 110)
-        return () => clearTimeout(timer)
-      }
-
-      finishedRef.current = true
+    if (phase !== 'loading') return
+    const elapsed = performance.now() - startedAt
+    const wait = loaded
+      ? Math.max(0, MIN_MS - elapsed)
+      : Math.max(0, MAX_MS - elapsed)
+    const timer = setTimeout(() => {
       setProgress(1)
       setPhase('wiping')
-    }
-    check()
-  }, [phase, progress])
+    }, wait)
+    return () => clearTimeout(timer)
+  }, [phase, loaded, startedAt])
 
   // Hand control back once the wipe has finished travelling.
   useEffect(() => {
@@ -178,7 +180,7 @@ export default function Preloader({ onDone }) {
           />
         </div>
         <div className="flex items-center justify-between font-mono text-[0.6rem] tracking-[0.24em] text-slate-dim uppercase">
-            <span>{t('ui.loading')}</span>
+          <span>{t('ui.loading')}</span>
           <span className="text-mist tabular-nums">
             {String(shown).padStart(3, '0')}
           </span>

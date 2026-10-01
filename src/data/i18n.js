@@ -5,8 +5,10 @@
  * written to carry the same meaning and tone rather than word-for-word
  * mirroring, which in the Spanish-to-English direction often reads badly.
  *
- * `t('hero.sub')`-style lookups live in src/lib/i18n.jsx.
+ * `t('hero.sub')`-style lookups live in src/lib/LocaleProvider.jsx.
  */
+
+import { FACTS } from './about'
 
 export const LOCALES = ['es', 'en']
 export const DEFAULT_LOCALE = 'es'
@@ -14,7 +16,7 @@ export const DEFAULT_LOCALE = 'es'
 /** Short code shown on the toggle. */
 export const LOCALE_LABEL = { es: 'ES', en: 'EN' }
 
-/** Name of the other language, shown as the toggle's accessible label. */
+/** Name of each language, used as the toggle buttons' accessible labels. */
 export const LOCALE_NAME = { es: 'Español', en: 'English' }
 
 export const DICT = {
@@ -27,6 +29,7 @@ export const DICT = {
     },
     ui: {
       loading: 'Cargando',
+      language: 'Idioma',
       skipToContent: 'Saltar al contenido',
       backToTop: 'SVB — volver al inicio',
       openMenu: 'Abrir menú',
@@ -128,13 +131,17 @@ export const DICT = {
       techLabel: 'Con qué trabajo',
       journeyNote: (years) => `Venezuela · ${years} años en Argentina`,
       bio: [
-        'Me llamo Sebastián de Jesús Valecillos Blanco, tengo 18 años y vengo de Venezuela. Llegué a Argentina con 10 años, así que crecí entre dos países y eso me dejó con la costumbre de adaptarme rápido y de no dar por sentado nada.',
+        `Me llamo Sebastián de Jesús Valecillos Blanco, tengo ${FACTS.age} años y vengo de Venezuela. Llegué a Argentina con ${FACTS.movedAtAge} años, así que crecí entre dos países y eso me dejó con la costumbre de adaptarme rápido y de no dar por sentado nada.`,
         'Estudié programación web en Coder House, y desde entonces el desarrollo se volvió mi forma de pensar las cosas. Me apasiona ese momento en que una idea que tenías en la cabeza de repente existe en pantalla y alguien la puede usar.',
         'Me dedico al 100% a esto porque creo que la tecnología bien usada resuelve problemas concretos: le ahorra tiempo a alguien, le muestra algo que no sabía, o le abre una salida donde no la había. Quiero seguir creciendo en esto y ayudar a las personas a resolver las necesidades que tienen.',
       ],
       stats: [
-        { value: '18', label: 'Años', note: 'Edad' },
-        { value: '8', label: 'Años en Argentina', note: 'Desde los 10' },
+        { value: String(FACTS.age), label: 'Años', note: 'Edad' },
+        {
+          value: String(FACTS.yearsInArgentina),
+          label: 'Años en Argentina',
+          note: `Desde los ${FACTS.movedAtAge}`,
+        },
         { value: '1', label: 'Curso', note: 'Programación web · Coder House' },
       ],
       drivers: [
@@ -181,6 +188,7 @@ export const DICT = {
     },
     ui: {
       loading: 'Loading',
+      language: 'Language',
       skipToContent: 'Skip to content',
       backToTop: 'SVB — back to top',
       openMenu: 'Open menu',
@@ -280,13 +288,17 @@ export const DICT = {
       techLabel: 'What I work with',
       journeyNote: (years) => `Venezuela · ${years} years in Argentina`,
       bio: [
-        'My name is Sebastián de Jesús Valecillos Blanco. I am 18 and I come from Venezuela. I moved to Argentina at 10, so I grew up between two countries, which left me used to adapting fast and taking nothing for granted.',
+        `My name is Sebastián de Jesús Valecillos Blanco. I am ${FACTS.age} and I come from Venezuela. I moved to Argentina at ${FACTS.movedAtAge}, so I grew up between two countries, which left me used to adapting fast and taking nothing for granted.`,
         'I studied web programming at Coder House, and since then development has become how I think. I love that moment when an idea in your head suddenly exists on screen and someone can actually use it.',
         'I am 100% committed to this because I think technology, used well, solves concrete problems: it saves someone time, shows them something they did not know, or opens a door that was not there before. I want to keep growing in this and help people with the needs they have.',
       ],
       stats: [
-        { value: '18', label: 'Years old', note: 'Age' },
-        { value: '8', label: 'Years in Argentina', note: 'Since age 10' },
+        { value: String(FACTS.age), label: 'Years old', note: 'Age' },
+        {
+          value: String(FACTS.yearsInArgentina),
+          label: 'Years in Argentina',
+          note: `Since age ${FACTS.movedAtAge}`,
+        },
         { value: '1', label: 'Course', note: 'Web programming · Coder House' },
       ],
       drivers: [

@@ -156,7 +156,7 @@ export default function PortalTransition() {
   }
 
   return (
-    <section ref={ref} aria-hidden="true" className={isMobile ? 'relative h-[220vh]' : 'relative h-[260vh]'}>
+    <section ref={ref} aria-hidden="true" className={isMobile ? 'relative h-[160vh]' : 'relative h-[190vh]'}>
       <div
         className="sticky top-0 flex h-svh items-center justify-center overflow-hidden"
         style={{

@@ -59,11 +59,6 @@ export function LocaleProvider({ children }) {
 
   useEffect(() => {
     document.documentElement.lang = locale
-    try {
-      window.localStorage.setItem(STORAGE_KEY, locale)
-    } catch {
-      // Private browsing: the choice just will not survive a reload.
-    }
 
     // Keep the SEO surface in step with the visible language.
     const { meta } = DICT[locale]
@@ -81,6 +76,14 @@ export function LocaleProvider({ children }) {
   const setLocale = useCallback((next) => {
     if (!LOCALES.includes(next)) return
     setLocaleState(next)
+    // Only an explicit choice is remembered. Saving the detected or URL
+    // language would freeze it: a visitor who once opened a ?lang=en link
+    // would get English forever, even with a Spanish browser.
+    try {
+      window.localStorage.setItem(STORAGE_KEY, next)
+    } catch {
+      // Private browsing: the choice just will not survive a reload.
+    }
     // Reflect the choice in the URL so the page can be shared in that language.
     // replaceState rather than push, so switching back and forth does not pile
     // up history entries for the reader to press Back through.
