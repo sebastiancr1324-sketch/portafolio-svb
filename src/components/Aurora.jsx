@@ -159,8 +159,11 @@ export default function Aurora({
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
     // Cap DPR: a full-bleed shader gains nothing visible past 1.5x and it is
-    // the single most expensive thing on the page.
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+    // the single most expensive thing on the page. On touch devices it drops
+    // to 1x: the aurora is a soft blur, so the lower resolution does not show,
+    // and phones share the GPU with the electric mark running beside it.
+    const coarse = window.matchMedia?.('(pointer: coarse)').matches
+    const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 1.5)
 
     let raf = 0
     let width = 0

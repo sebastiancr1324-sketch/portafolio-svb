@@ -1,10 +1,15 @@
 import { motion } from 'motion/react'
+import { lazy, Suspense } from 'react'
 import Aurora from './Aurora'
-import ElectricLogo from './ElectricLogo'
 import PillButton from './PillButton'
 import SplitText from './SplitText'
 import { WHATSAPP_URL } from '../data/site'
 import { useI18n } from '../lib/locale'
+
+// The electric mark (and the `ogl` WebGL library behind it) is the heaviest
+// code on the page and purely decorative, so it ships as its own chunk and
+// never holds up the headline. Its box keeps its size while it loads.
+const ElectricLogo = lazy(() => import('./ElectricLogo'))
 
 /**
  * Hero — the first screen.
@@ -106,28 +111,30 @@ export default function Hero({ ready = true }) {
             className="lg:col-start-2 lg:row-span-2 lg:row-start-1"
           >
             <div className="relative mx-auto aspect-[3/2] w-full max-w-[24rem] sm:max-w-[28rem] lg:max-w-[460px] lg:aspect-square xl:max-w-[600px]">
-              <ElectricLogo
-                // Base-aware: the site is served from a sub-path
-                // (/portafolio-svb/), so a root-absolute "/logo.svg" 404s
-                // there and the logo never draws.
-                src={`${import.meta.env.BASE_URL}logo.svg`}
-                color="#F4CDBB"
-                glowColor="#E8B4A0"
-                scale={0.8}
-                strands={4}
-                bend={0.6}
-                crackle={1.5}
-                arcs={1}
-                speed={2.5}
-                interactive
-                intensity={1}
-                glow={1}
-                thickness={1.5}
-                flicker={0.6}
-                fill={0}
-                cursorIntensity={0.75}
-                cursorRadius={100}
-              />
+              <Suspense fallback={null}>
+                <ElectricLogo
+                  // Base-aware: the site is served from a sub-path
+                  // (/portafolio-svb/), so a root-absolute "/logo.svg" 404s
+                  // there and the logo never draws.
+                  src={`${import.meta.env.BASE_URL}logo.svg`}
+                  color="#F4CDBB"
+                  glowColor="#E8B4A0"
+                  scale={0.8}
+                  strands={4}
+                  bend={0.6}
+                  crackle={1.5}
+                  arcs={1}
+                  speed={2.5}
+                  interactive
+                  intensity={1}
+                  glow={1}
+                  thickness={1.5}
+                  flicker={0.6}
+                  fill={0}
+                  cursorIntensity={0.75}
+                  cursorRadius={100}
+                />
+              </Suspense>
             </div>
           </motion.div>
 

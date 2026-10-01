@@ -9,6 +9,8 @@ página, estáticos, sin backend.
 - **Tailwind CSS v4** (vía `@tailwindcss/vite`, tokens en `src/index.css`)
 - **Motion** (`motion/react`) para animaciones y scroll
 - **WebGL** puro para el fondo Aurora — sin dependencias de shader
+- **Fuentes** alojadas en el propio sitio vía `@fontsource` (Anton, Inter,
+  JetBrains Mono, solo subset latino), importadas en `src/main.jsx`
 
 ## Comandos
 
@@ -41,6 +43,12 @@ importación de imágenes se resuelven solas.
 
 `url` va en `null` si el sitio todavía no está publicado: la tarjeta muestra
 un estado neutro en vez de enlazar a un 404.
+
+## Vista previa al compartir
+
+`public/og-image.jpg` (1200×630) es la tarjeta que muestran WhatsApp,
+Instagram y otras redes al pegar el link. Si cambia el titular o la marca,
+conviene regenerarla; la URL está en las etiquetas `og:image` de `index.html`.
 
 ## Contacto
 
