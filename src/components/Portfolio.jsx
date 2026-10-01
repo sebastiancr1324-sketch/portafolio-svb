@@ -61,6 +61,10 @@ function ProjectCard({ project, index }) {
                 target: '_blank',
                 rel: 'noopener noreferrer',
                 'aria-label': t('ui.viewProject')(copy.name),
+                // The "View live site" button below goes to the same place,
+                // so the screenshot stays clickable but is skipped by the
+                // keyboard instead of being a second, identical tab stop.
+                tabIndex: -1,
               }
             : {})}
           className="block rounded-xl"

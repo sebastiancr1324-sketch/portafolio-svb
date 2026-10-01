@@ -5,7 +5,7 @@
  * written to carry the same meaning and tone rather than word-for-word
  * mirroring, which in the Spanish-to-English direction often reads badly.
  *
- * `t('hero.sub')`-style lookups live in src/lib/i18n.jsx.
+ * `t('hero.sub')`-style lookups live in src/lib/LocaleProvider.jsx.
  */
 
 export const LOCALES = ['es', 'en']
@@ -27,6 +27,7 @@ export const DICT = {
     },
     ui: {
       loading: 'Cargando',
+      language: 'Idioma',
       skipToContent: 'Saltar al contenido',
       backToTop: 'SVB — volver al inicio',
       openMenu: 'Abrir menú',
@@ -181,6 +182,7 @@ export const DICT = {
     },
     ui: {
       loading: 'Loading',
+      language: 'Language',
       skipToContent: 'Skip to content',
       backToTop: 'SVB — back to top',
       openMenu: 'Open menu',

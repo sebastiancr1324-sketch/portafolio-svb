@@ -14,10 +14,10 @@ export const OWNER = {
   location: 'CABA, Argentina',
 }
 
-/** Anchor targets for the full-screen menu and in-page links. */
 /**
- * Nav targets. `key` resolves to a label in src/data/i18n.js under `nav`,
- * so the menu is translated rather than hardcoded.
+ * Anchor targets for the full-screen menu and in-page links. `key` resolves
+ * to a label in src/data/i18n.js under `nav`, so the menu is translated
+ * rather than hardcoded.
  */
 export const NAV_LINKS = [
   { key: 'services', href: '#servicios' },
