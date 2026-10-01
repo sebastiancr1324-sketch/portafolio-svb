@@ -191,21 +191,36 @@
 
   /* Clipping masks for SplitText.
      The heading line-height is tighter than the glyphs, so a plain
-     overflow:hidden would slice descenders (g, j, p, q, y). Padding the
-     mask and cancelling it with an equal negative margin gives the extra
-     room without disturbing layout. */
+     overflow:hidden would slice descenders (g, j, p, q, y) and the marks
+     that sit above uppercase letters (Ñ, Á, É, Í, Ó, Ú). Padding the mask
+     on both sides and cancelling it with an equal negative margin gives the
+     extra room without disturbing layout. */
   .split-mask {
     display: inline-block;
     overflow: hidden;
     vertical-align: bottom;
+    padding-top: 0.35em;
+    margin-top: -0.35em;
     padding-bottom: 0.16em;
     margin-bottom: -0.16em;
   }
 
+  /* Stacked lines are blocks, and adjacent block margins collapse to the
+     larger one instead of adding up. So the whole overlap between two lines
+     sits on the lower line's top margin, keeping the original spacing. */
   .split-line {
     display: block;
     overflow: hidden;
+    padding-top: 0.35em;
+    margin-top: -0.35em;
     padding-bottom: 0.16em;
+  }
+
+  .split-line + .split-line {
+    margin-top: -0.51em;
+  }
+
+  .split-line:last-child {
     margin-bottom: -0.16em;
   }
 
