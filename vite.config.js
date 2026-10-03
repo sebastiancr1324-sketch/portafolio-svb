@@ -9,5 +9,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     target: 'es2020',
+    // three.js is ~550 kB but ships only in the lazily loaded hero scene
+    // chunk (src/lib/heroScene.js), never in the main bundle.
+    chunkSizeWarningLimit: 600,
   },
 })

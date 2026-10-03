@@ -3,9 +3,8 @@ import About from './components/About'
 import FooterCTA from './components/FooterCTA'
 import GlowCursor from './components/GlowCursor'
 import Header from './components/Header'
-import Hero from './components/Hero'
+import HeroStory from './components/HeroStory'
 import Portfolio from './components/Portfolio'
-import PortalTransition from './components/PortalTransition'
 import Preloader from './components/Preloader'
 import Services from './components/Services'
 import { LocaleProvider } from './lib/LocaleProvider'
@@ -33,8 +32,7 @@ function Shell() {
       <Header />
 
       <main>
-        <Hero ready={ready} />
-        <PortalTransition />
+        <HeroStory ready={ready} />
         <Portfolio />
         <Services />
         <About />
