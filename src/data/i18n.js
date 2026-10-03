@@ -53,11 +53,12 @@ export const DICT = {
     hero: {
       available: 'Disponible para proyectos nuevos',
       headline: [
-        { text: 'Desarrollo web a medida', tone: 'bone' },
-        { text: 'diseñado para convertir', tone: 'bone' },
+        { text: 'Webs a medida', tone: 'bone' },
+        { text: 'que convierten', tone: 'bone' },
         { text: 'visitantes en clientes.', tone: 'peach' },
       ],
       sub: 'Desde landing pages hasta e-commerce. Soluciones escalables que hacen crecer tu marca.',
+      proof: '4 proyectos entregados · Respuesta en menos de 24 h',
       ctaPrimary: 'Iniciar proyecto',
       ctaSecondary: 'Ver proyectos',
     },
@@ -70,6 +71,9 @@ export const DICT = {
       eyebrow: 'Trabajo reciente',
       title: 'Portafolio',
       count: (n) => `${String(n).padStart(2, '0')} proyectos`,
+      role: 'Rol',
+      year: 'Año',
+      stack: 'Stack',
     },
     projects: {
       manaba: {
@@ -78,6 +82,7 @@ export const DICT = {
         description:
           'Interfaz cálida y minimalista enfocada en transmitir la identidad del local y facilitar reservas de mesas.',
         tags: ['Identidad', 'Reservas', 'Menú'],
+        role: 'Diseño y desarrollo',
       },
       sebtech: {
         name: 'SebTech',
@@ -85,6 +90,7 @@ export const DICT = {
         description:
           'Catálogo digital rápido e intuitivo, diseñado para optimizar el recorrido del usuario y maximizar ventas.',
         tags: ['Catálogo', 'Carrito', 'Filtros'],
+        role: 'Diseño y desarrollo',
       },
       barbudos: {
         name: "Barbudo's Barbershop",
@@ -92,6 +98,7 @@ export const DICT = {
         description:
           'Diseño audaz y de alto impacto visual, estructurado para captar clientes y agilizar reservas vía WhatsApp.',
         tags: ['Turnos', 'WhatsApp', 'Galería'],
+        role: 'Diseño y desarrollo',
       },
       capricciosa: {
         name: 'Capricciosa Postres',
@@ -99,6 +106,7 @@ export const DICT = {
         description:
           'Experiencia visual vibrante y tentadora, centrada en facilitar pedidos rápidos y destacar los productos.',
         tags: ['Delivery', 'Pedidos', 'Carrito'],
+        role: 'Diseño y desarrollo',
       },
     },
     services: {
@@ -109,20 +117,35 @@ export const DICT = {
       items: [
         {
           title: 'Landing pages',
+          whatsapp: 'Hola Sebastián, quiero una landing page',
           text: 'Páginas de una sola pantalla, cargadas rápido y diseñadas para que el visitante pase a la acción.',
         },
         {
           title: 'E-commerce',
+          whatsapp: 'Hola Sebastián, quiero una tienda online',
           text: 'Catálogos y carritos rápidos, con un recorrido pensado para que nadie se pierda en el camino a la compra.',
         },
         {
           title: 'Sitios institucionales',
+          whatsapp: 'Hola Sebastián, quiero un sitio institucional',
           text: 'Presencia seria para negocios de servicios: identidad clara, información ordenada y contacto directo.',
         },
         {
           title: 'Sistemas de turnos',
+          whatsapp: 'Hola Sebastián, quiero un sistema de turnos',
           text: 'Reservas y agenda conectados a WhatsApp, para que tu equipo reciba los pedidos sin llamadas perdidas.',
         },
+      ],
+    },
+    process: {
+      eyebrow: 'Cómo trabajo',
+      titleLines: ['Del brief', 'al lanzamiento'],
+      lead: 'Cuatro pasos, sin vueltas. Sabés en qué etapa está tu proyecto en todo momento.',
+      steps: [
+        { title: 'Brief', text: 'Charlamos por WhatsApp o videollamada: qué vendés, a quién y qué tiene que lograr el sitio.' },
+        { title: 'Diseño', text: 'Te muestro la propuesta visual de las pantallas clave y la ajustamos antes de escribir código.' },
+        { title: 'Desarrollo', text: 'Construyo el sitio rápido y responsive, y te comparto un link para que lo revises en tu celular.' },
+        { title: 'Lanzamiento', text: 'Lo publicamos con tu dominio, conectado a WhatsApp, y te explico cómo actualizarlo.' },
       ],
     },
     about: {
@@ -130,19 +153,19 @@ export const DICT = {
       titleLines: ['Detrás de', 'cada proyecto'],
       techLabel: 'Con qué trabajo',
       journeyNote: (years) => `Venezuela · ${years} años en Argentina`,
+      summary:
+        'Soy Sebastián, desarrollador web venezolano radicado en CABA. Estudié programación web en Coder House y me dedico al 100% a construir sitios que resuelven problemas concretos de cada negocio.',
+      readMore: 'Leer más',
+      readLess: 'Leer menos',
       bio: [
         `Me llamo Sebastián de Jesús Valecillos Blanco, tengo ${FACTS.age} años y vengo de Venezuela. Llegué a Argentina con ${FACTS.movedAtAge} años, así que crecí entre dos países y eso me dejó con la costumbre de adaptarme rápido y de no dar por sentado nada.`,
         'Estudié programación web en Coder House, y desde entonces el desarrollo se volvió mi forma de pensar las cosas. Me apasiona ese momento en que una idea que tenías en la cabeza de repente existe en pantalla y alguien la puede usar.',
         'Me dedico al 100% a esto porque creo que la tecnología bien usada resuelve problemas concretos: le ahorra tiempo a alguien, le muestra algo que no sabía, o le abre una salida donde no la había. Quiero seguir creciendo en esto y ayudar a las personas a resolver las necesidades que tienen.',
       ],
       stats: [
-        { value: String(FACTS.age), label: 'Años', note: 'Edad' },
-        {
-          value: String(FACTS.yearsInArgentina),
-          label: 'Años en Argentina',
-          note: `Desde los ${FACTS.movedAtAge}`,
-        },
-        { value: '1', label: 'Curso', note: 'Programación web · Coder House' },
+        { value: '4', label: 'Proyectos entregados' },
+        { value: '<24 h', label: 'De respuesta' },
+        { value: 'React', label: '+ Tailwind CSS' },
       ],
       drivers: [
         {
@@ -176,6 +199,8 @@ export const DICT = {
       response: 'Respuesta en menos de 24 horas',
       instagram: 'Instagram',
       email: 'Email',
+      testimonialLabel: 'Lo que dicen',
+      socialNav: 'Redes y contacto',
     },
   },
 
@@ -211,11 +236,12 @@ export const DICT = {
     hero: {
       available: 'Available for new projects',
       headline: [
-        { text: 'Bespoke web development', tone: 'bone' },
-        { text: 'built to convert', tone: 'bone' },
+        { text: 'Custom websites', tone: 'bone' },
+        { text: 'that turn', tone: 'bone' },
         { text: 'visitors into customers.', tone: 'peach' },
       ],
       sub: 'From landing pages to e-commerce. Scalable solutions that grow your brand.',
+      proof: '4 projects delivered · Replies within 24 h',
       ctaPrimary: 'Start a project',
       ctaSecondary: 'See the work',
     },
@@ -228,6 +254,9 @@ export const DICT = {
       eyebrow: 'Recent work',
       title: 'Portfolio',
       count: (n) => `${String(n).padStart(2, '0')} projects`,
+      role: 'Role',
+      year: 'Year',
+      stack: 'Stack',
     },
     projects: {
       manaba: {
@@ -236,6 +265,7 @@ export const DICT = {
         description:
           'A warm, minimal interface built to convey the character of the venue and make table bookings effortless.',
         tags: ['Identity', 'Bookings', 'Menu'],
+        role: 'Design and development',
       },
       sebtech: {
         name: 'SebTech',
@@ -243,6 +273,7 @@ export const DICT = {
         description:
           'A fast, intuitive digital catalogue designed to streamline the user journey and maximise sales.',
         tags: ['Catalogue', 'Cart', 'Filters'],
+        role: 'Design and development',
       },
       barbudos: {
         name: "Barbudo's Barbershop",
@@ -250,6 +281,7 @@ export const DICT = {
         description:
           'A bold, high-impact design built to win customers and speed up bookings over WhatsApp.',
         tags: ['Appointments', 'WhatsApp', 'Gallery'],
+        role: 'Design and development',
       },
       capricciosa: {
         name: 'Capricciosa Postres',
@@ -257,6 +289,7 @@ export const DICT = {
         description:
           'A vibrant, appetising experience focused on quick ordering and putting the products front and centre.',
         tags: ['Delivery', 'Orders', 'Cart'],
+        role: 'Design and development',
       },
     },
     services: {
@@ -266,20 +299,35 @@ export const DICT = {
       items: [
         {
           title: 'Landing pages',
+          whatsapp: 'Hi Sebastián, I would like a landing page',
           text: 'Single-screen pages that load fast and are built to move the visitor to action.',
         },
         {
           title: 'E-commerce',
+          whatsapp: 'Hi Sebastián, I would like an online store',
           text: 'Fast catalogues and carts, with a flow designed so nobody gets lost on the way to checkout.',
         },
         {
           title: 'Corporate sites',
+          whatsapp: 'Hi Sebastián, I would like a corporate site',
           text: 'A serious presence for service businesses: clear identity, organised information and direct contact.',
         },
         {
           title: 'Booking systems',
+          whatsapp: 'Hi Sebastián, I would like a booking system',
           text: 'Reservations and scheduling wired to WhatsApp, so your team takes orders without missing calls.',
         },
+      ],
+    },
+    process: {
+      eyebrow: 'How I work',
+      titleLines: ['From brief', 'to launch'],
+      lead: 'Four steps, no detours. You always know which stage your project is at.',
+      steps: [
+        { title: 'Brief', text: 'We talk over WhatsApp or a video call: what you sell, to whom and what the site has to achieve.' },
+        { title: 'Design', text: 'I show you the visual direction for the key screens and we refine it before any code is written.' },
+        { title: 'Development', text: 'I build a fast, responsive site and send you a link so you can review it on your phone.' },
+        { title: 'Launch', text: 'We publish it on your domain, wired to WhatsApp, and I show you how to keep it up to date.' },
       ],
     },
     about: {
@@ -287,19 +335,19 @@ export const DICT = {
       titleLines: ['Behind', 'every project'],
       techLabel: 'What I work with',
       journeyNote: (years) => `Venezuela · ${years} years in Argentina`,
+      summary:
+        'I am Sebastián, a Venezuelan web developer based in Buenos Aires. I studied web programming at Coder House and work full-time building sites that solve each business’s concrete problems.',
+      readMore: 'Read more',
+      readLess: 'Read less',
       bio: [
         `My name is Sebastián de Jesús Valecillos Blanco. I am ${FACTS.age} and I come from Venezuela. I moved to Argentina at ${FACTS.movedAtAge}, so I grew up between two countries, which left me used to adapting fast and taking nothing for granted.`,
         'I studied web programming at Coder House, and since then development has become how I think. I love that moment when an idea in your head suddenly exists on screen and someone can actually use it.',
         'I am 100% committed to this because I think technology, used well, solves concrete problems: it saves someone time, shows them something they did not know, or opens a door that was not there before. I want to keep growing in this and help people with the needs they have.',
       ],
       stats: [
-        { value: String(FACTS.age), label: 'Years old', note: 'Age' },
-        {
-          value: String(FACTS.yearsInArgentina),
-          label: 'Years in Argentina',
-          note: `Since age ${FACTS.movedAtAge}`,
-        },
-        { value: '1', label: 'Course', note: 'Web programming · Coder House' },
+        { value: '4', label: 'Projects delivered' },
+        { value: '<24 h', label: 'Response time' },
+        { value: 'React', label: '+ Tailwind CSS' },
       ],
       drivers: [
         {
@@ -333,6 +381,8 @@ export const DICT = {
       response: 'Reply within 24 hours',
       instagram: 'Instagram',
       email: 'Email',
+      testimonialLabel: 'What clients say',
+      socialNav: 'Profiles and contact',
     },
   },
 }

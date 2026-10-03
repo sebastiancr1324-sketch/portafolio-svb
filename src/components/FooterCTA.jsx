@@ -1,7 +1,15 @@
 import { motion, useReducedMotion } from 'motion/react'
 import BrandMark from './BrandMark'
 import SplitText from './SplitText'
-import { INSTAGRAM_URL, EMAIL, OWNER, WHATSAPP_URL } from '../data/site'
+import { TESTIMONIAL } from '../data/about'
+import {
+  EMAIL,
+  GITHUB_URL,
+  INSTAGRAM_URL,
+  LINKEDIN_URL,
+  OWNER,
+  WHATSAPP_URL,
+} from '../data/site'
 import { useI18n } from '../lib/locale'
 
 /**
@@ -45,7 +53,7 @@ function GiantCta() {
           className="absolute inset-0 -z-10 translate-x-[-120%] skew-x-12 bg-linear-to-r from-transparent via-white/45 to-transparent transition-transform duration-1000 [transition-timing-function:var(--ease-out-expo)] group-hover:translate-x-[120%]"
         />
 
-        <span className="font-display text-lg tracking-[0.02em] uppercase sm:text-2xl">
+        <span className="font-mono text-sm font-medium tracking-[0.08em] uppercase sm:text-base">
           {t('hero.ctaPrimary')}
         </span>
 
@@ -64,6 +72,34 @@ function GiantCta() {
 }
 
 /**
+ * Testimonial — social proof right before the ask. A placeholder entry
+ * (`placeholder: true` in src/data/about.js) only shows in development.
+ */
+function Testimonial() {
+  const { locale, t } = useI18n()
+  if (!TESTIMONIAL || (TESTIMONIAL.placeholder && !import.meta.env.DEV)) return null
+
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="mx-auto mb-20 max-w-2xl border-b border-white/8 pb-16 text-center md:mb-24"
+    >
+      <span className="type-label text-slate">{t('cta.testimonialLabel')}</span>
+      <blockquote className="mt-6 text-xl leading-relaxed text-mist md:text-2xl">
+        <p>“{TESTIMONIAL.quote[locale]}”</p>
+      </blockquote>
+      <figcaption className="mt-6">
+        <span className="type-title block text-mist">{TESTIMONIAL.name}</span>
+        <span className="type-label mt-1 block text-slate">{TESTIMONIAL.role[locale]}</span>
+      </figcaption>
+    </motion.figure>
+  )
+}
+
+/**
  * FooterCTA — the close. No bio, no form: one question and one action.
  * A slim strip below carries the only remaining metadata.
  */
@@ -72,7 +108,7 @@ export default function FooterCTA() {
   return (
     <footer
       id="contacto"
-      className="relative scroll-mt-24 overflow-hidden border-t border-white/8 pt-24 pb-10 md:pt-28"
+      className="relative overflow-hidden border-t border-white/8 pt-24 pb-10 md:pt-28"
     >
       {/* Aurora-lit backdrop for the finale. */}
       <div
@@ -84,18 +120,22 @@ export default function FooterCTA() {
         }}
       />
 
+      <div className="shell">
+        <Testimonial />
+      </div>
+
       <div className="shell flex flex-col items-center text-center">
         <motion.span
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-[0.62rem] tracking-[0.3em] text-peach uppercase"
+          className="type-label text-peach"
         >
           {t('cta.eyebrow')}
         </motion.span>
 
-        <h2 className="mt-3.5 max-w-[18ch] font-display text-[clamp(2.5rem,8.5vw,7rem)] leading-[0.9] text-bone">
+        <h2 className="type-display-lg mt-3 max-w-[18ch] text-bone">
           <SplitText as="span" text={t('cta.title')} by="word" className="block" />
         </h2>
 
@@ -122,39 +162,48 @@ export default function FooterCTA() {
           <GiantCta />
         </div>
 
-        <p className="mt-4 font-mono text-[0.6rem] tracking-[0.2em] text-slate-dim uppercase">
+        <p className="type-body-sm mt-4 text-slate">
           {t('cta.response')}
         </p>
       </div>
 
       {/* Slim meta strip */}
       <div className="shell mt-14 border-t border-white/8 pt-7 md:mt-18">
-        <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
-          <p className="font-mono text-[0.6rem] tracking-[0.18em] text-slate-dim uppercase">
-            © {new Date().getFullYear()} {OWNER.name}
-          </p>
+        <div className="flex flex-col items-center gap-6 text-center lg:flex-row lg:justify-between lg:text-left">
+          {/* Email first and in plain case: easy to read and to copy. */}
+          <a
+            href={`mailto:${EMAIL}`}
+            className="inline-block rounded-sm py-2.5 text-base text-mist underline decoration-white/20 underline-offset-4 transition-colors duration-300 hover:text-peach hover:decoration-peach"
+          >
+            {EMAIL}
+          </a>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-[0.6rem] tracking-[0.18em] text-slate uppercase transition-colors duration-500 hover:text-peach"
-            >
-              Instagram
-            </a>
-            <span aria-hidden="true" className="h-3 w-px bg-white/12" />
-            <a
-              href={`mailto:${EMAIL}`}
-              className="font-mono text-[0.6rem] tracking-[0.18em] text-slate uppercase transition-colors duration-500 hover:text-peach"
-            >
-              {EMAIL}
-            </a>
-            <span aria-hidden="true" className="h-3 w-px bg-white/12" />
-            <span className="font-mono text-[0.6rem] tracking-[0.18em] text-slate-dim uppercase">
-              {OWNER.location}
-            </span>
-          </div>
+          <nav aria-label={t('cta.socialNav')}>
+            <ul className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+              {[
+                ['Instagram', INSTAGRAM_URL],
+                ['GitHub', GITHUB_URL],
+                ['LinkedIn', LINKEDIN_URL],
+              ]
+                .filter(([, href]) => href)
+                .map(([label, href]) => (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="type-button inline-flex h-11 items-center rounded-full px-3 text-slate transition-colors duration-300 hover:text-peach"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </nav>
+
+          <p className="type-label text-slate">
+            © {new Date().getFullYear()} {OWNER.name} · {OWNER.location}
+          </p>
         </div>
       </div>
     </footer>

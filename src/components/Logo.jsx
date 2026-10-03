@@ -60,7 +60,7 @@ export default function Logo({ compact = false, className = '' }) {
       {!compact && (
         <span className="flex flex-col leading-none">
           <span className="font-display text-lg tracking-[0.02em] text-bone">SVB</span>
-          <span className="mt-1 font-mono text-[0.55rem] tracking-[0.24em] text-slate-dim uppercase">
+          <span className="mt-1 font-mono text-[11px] font-medium tracking-[0.14em] whitespace-nowrap text-slate uppercase max-sm:hidden lg:max-xl:hidden">
             Sebastian Valecillos
           </span>
         </span>

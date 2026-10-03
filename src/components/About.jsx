@@ -1,4 +1,5 @@
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
+import { useId, useState } from 'react'
 import SplitText from './SplitText'
 import { CURRENT_CITY, FACTS } from '../data/about'
 import { useI18n } from '../lib/locale'
@@ -16,9 +17,7 @@ function Journey() {
       transition={{ duration: 0.8 }}
       className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-3 border-y border-white/8 py-5 sm:gap-x-6"
     >
-      <span className="font-display text-2xl text-bone md:text-3xl">
-        {FACTS.originCity}
-      </span>
+      <span className="type-title text-mist">{FACTS.originCity}</span>
       <span className="flex items-center gap-2" aria-hidden="true">
         <span className="h-px w-8 bg-white/15 sm:w-12" />
         <svg
@@ -35,17 +34,15 @@ function Journey() {
           />
         </svg>
       </span>
-      <span className="font-display text-2xl text-peach md:text-3xl">
-        {CURRENT_CITY}
-      </span>
-      <span className="w-full font-mono text-[0.58rem] tracking-[0.2em] text-slate-dim uppercase sm:w-auto sm:ml-auto">
+      <span className="type-title text-peach">{CURRENT_CITY}</span>
+      <span className="type-label w-full text-slate sm:ml-auto sm:w-auto">
         {t('about.journeyNote')(FACTS.yearsInArgentina)}
       </span>
     </motion.div>
   )
 }
 
-function Stat({ value, label, note, delay }) {
+function Stat({ value, label, delay }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -54,17 +51,80 @@ function Stat({ value, label, note, delay }) {
       transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
       className="border-t border-white/8 pt-5"
     >
-      <div className="font-display text-5xl text-bone md:text-6xl">
+      <div className="type-display-md text-bone">
         {value}
         <span className="text-peach">.</span>
       </div>
-      <div className="mt-2 font-mono text-[0.62rem] tracking-[0.2em] text-mist uppercase">
-        {label}
-      </div>
-      {note && (
-        <div className="mt-1 text-xs leading-relaxed text-slate-dim">{note}</div>
-      )}
+      <div className="type-label mt-3 text-mist">{label}</div>
     </motion.div>
+  )
+}
+
+/** Short summary up front; the full story one click away. */
+function Bio() {
+  const { t } = useI18n()
+  const [open, setOpen] = useState(false)
+  const id = useId()
+  const bio = t('about.bio')
+
+  return (
+    <div>
+      <motion.p
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-[60ch] text-lg leading-relaxed text-mist md:text-xl"
+      >
+        {t('about.summary')}
+      </motion.p>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            id={id}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-6 pt-6">
+              {bio.map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 24)}
+                  className="max-w-[60ch] text-base leading-relaxed text-slate md:text-lg"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={id}
+        className="type-button group mt-4 inline-flex h-11 items-center gap-2.5 rounded-full text-mist transition-colors duration-300 hover:text-peach"
+      >
+        {open ? t('about.readLess') : t('about.readMore')}
+        <svg
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className={`h-3.5 w-3.5 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+        >
+          <path d="M3.5 6 8 10.5 12.5 6" />
+        </svg>
+      </button>
+    </div>
   )
 }
 
@@ -77,7 +137,6 @@ function Stat({ value, label, note, delay }) {
 export default function About() {
   const { t } = useI18n()
   const [titleTop, titleBottom] = t('about.titleLines')
-  const bio = t('about.bio')
   const stats = t('about.stats')
   const drivers = t('about.drivers')
   const tech = t('tech')
@@ -85,7 +144,7 @@ export default function About() {
   return (
     <section
       id="sobre-mi"
-      className="relative scroll-mt-24 border-t border-white/8 py-28 md:py-36"
+      className="relative border-t border-white/8 py-24 md:py-32"
     >
       <div
         aria-hidden="true"
@@ -106,12 +165,12 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.6 }}
                 transition={{ duration: 0.6 }}
-                className="font-mono text-[0.62rem] tracking-[0.3em] text-peach uppercase"
+                className="type-label text-peach"
               >
                 {t('about.eyebrow')}
               </motion.span>
 
-              <h2 className="mt-4 font-display text-[clamp(2.5rem,6vw,4.5rem)] text-bone">
+              <h2 className="type-display-lg mt-3 text-bone">
                 <SplitText as="span" text={titleTop} className="block" />
                 <SplitText
                   as="span"
@@ -127,28 +186,7 @@ export default function About() {
 
           {/* Bio + stats + drivers. */}
           <div className="lg:col-span-7">
-            <div className="space-y-6">
-              {bio.map((paragraph, i) => (
-                <motion.p
-                  key={paragraph.slice(0, 24)}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{
-                    duration: 0.8,
-                    delay: i * 0.1,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className={`leading-relaxed text-slate ${
-                    i === 0
-                      ? 'text-lg text-mist md:text-xl'
-                      : 'text-base md:text-lg'
-                  }`}
-                >
-                  {paragraph}
-                </motion.p>
-              ))}
-            </div>
+            <Bio />
 
             <ul className="mt-12 grid gap-8 sm:grid-cols-3">
               {stats.map((stat, i) => (
@@ -166,7 +204,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="font-mono text-[0.6rem] tracking-[0.24em] text-slate-dim uppercase"
+                className="type-label text-slate"
               >
                 {t('about.techLabel')}
               </motion.h3>
@@ -182,7 +220,7 @@ export default function About() {
                       delay: i * 0.045,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="rounded-full bg-white/[0.04] px-4 py-2 font-mono text-[0.62rem] tracking-[0.12em] text-mist uppercase ring-1 ring-white/8 transition-colors duration-500 hover:text-peach hover:ring-peach/40"
+                    className="type-label rounded-full bg-white/[0.04] px-3 py-1.5 text-mist ring-1 ring-white/8 transition-colors duration-500 hover:text-peach hover:ring-peach/40"
                   >
                     {item}
                   </motion.li>
@@ -205,14 +243,12 @@ export default function About() {
                   className="group border-t border-white/8 py-7 last:border-b hover:border-peach/40"
                 >
                   <div className="flex items-baseline gap-5">
-                    <span className="font-mono text-[0.6rem] text-peach/70 transition-colors duration-500 group-hover:text-peach">
+                    <span className="type-label text-peach/70 transition-colors duration-500 group-hover:text-peach">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <div>
-                      <h3 className="font-display text-xl text-bone">
-                        {driver.title}
-                      </h3>
-                      <p className="mt-2 max-w-lg text-sm leading-relaxed text-slate">
+                      <h3 className="type-title text-mist">{driver.title}</h3>
+                      <p className="mt-2 max-w-lg text-sm leading-relaxed text-slate md:text-base">
                         {driver.text}
                       </p>
                     </div>

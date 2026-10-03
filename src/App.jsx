@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react'
 import { useState } from 'react'
 import About from './components/About'
 import FooterCTA from './components/FooterCTA'
@@ -6,6 +7,7 @@ import Header from './components/Header'
 import HeroStory from './components/HeroStory'
 import Portfolio from './components/Portfolio'
 import Preloader from './components/Preloader'
+import Process from './components/Process'
 import Services from './components/Services'
 import { LocaleProvider } from './lib/LocaleProvider'
 import { useI18n } from './lib/locale'
@@ -24,7 +26,7 @@ function Shell() {
 
       <a
         href="#proyectos"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-full focus:bg-peach focus:px-5 focus:py-3 focus:font-mono focus:text-xs focus:tracking-widest focus:text-ink focus:uppercase"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-full focus:bg-peach focus:px-5 focus:py-3 focus:type-button focus:text-ink"
       >
         {t('ui.skipToContent')}
       </a>
@@ -35,6 +37,7 @@ function Shell() {
         <HeroStory ready={ready} />
         <Portfolio />
         <Services />
+        <Process />
         <About />
       </main>
 
@@ -46,7 +49,11 @@ function Shell() {
 export default function App() {
   return (
     <LocaleProvider>
-      <Shell />
+      {/* Entrance animations drop their movement (opacity only) for visitors
+          who ask the OS for reduced motion. The 3D hero manages its own. */}
+      <MotionConfig reducedMotion="user">
+        <Shell />
+      </MotionConfig>
     </LocaleProvider>
   )
 }

@@ -123,12 +123,12 @@ export default function HeroStory({ ready = true }) {
         {/* WebGL stage: the scene appends its own canvas here. */}
         <div ref={glRef} className="absolute inset-0" />
 
-        <div className="shell relative grid h-full grid-cols-1 content-start pt-24 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:content-center lg:items-center lg:gap-8 lg:pt-0">
+        <div className="shell relative grid h-full grid-cols-1 content-start pt-28 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:content-center lg:items-center lg:gap-8 lg:pt-24 lg:pb-20">
           <div className="grid min-w-0">
             {/* Layer 1: the promise */}
             <div
               ref={copyRef}
-              className={`${layer(phase === 'copy')} flex flex-col gap-4 self-start lg:gap-7 lg:self-center`}
+              className={`${layer(phase === 'copy')} flex flex-col gap-4 self-start lg:gap-6 lg:self-center`}
               inert={phase !== 'copy'}
             >
               <motion.div
@@ -141,12 +141,12 @@ export default function HeroStory({ ready = true }) {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-peach opacity-60" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-peach" />
                 </span>
-                <span className="font-mono text-[0.6rem] tracking-[0.2em] text-mist uppercase">
+                <span className="type-label text-mist">
                   {t('hero.available')}
                 </span>
               </motion.div>
 
-              <h1 className="font-display text-[clamp(2rem,8.8vw,3.4rem)] leading-[0.9] tracking-[-0.02em] lg:text-[clamp(2.75rem,5.4vw,6rem)]">
+              <h1 className="type-display-xl">
                 {headline.map((line) => (
                   <span key={line.text} className="split-line">
                     <SplitText
@@ -168,21 +168,14 @@ export default function HeroStory({ ready = true }) {
                 initial={{ opacity: 0, y: 24 }}
                 animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
                 transition={{ duration: 0.9, delay: 0.75, ease: EASE }}
-                className="flex flex-col gap-4 lg:gap-8"
+                className="flex flex-col gap-4 lg:gap-6"
               >
                 <p className="max-w-md text-[0.9rem] leading-relaxed text-slate lg:text-lg">
                   {t('hero.sub')}
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
                   {/* Compact on phones, where the devices sit right under the copy. */}
-                  <PillButton
-                    href={WHATSAPP_URL}
-                    variant="primary"
-                    size="md"
-                    glow
-                    withArrow
-                    className="lg:h-14 lg:px-9 lg:text-[0.75rem]"
-                  >
+                  <PillButton href={WHATSAPP_URL} variant="primary" size="md" withArrow>
                     {t('hero.ctaPrimary')}
                   </PillButton>
                   {/* On phones the scroll itself is the way to the work. */}
@@ -191,11 +184,12 @@ export default function HeroStory({ ready = true }) {
                     variant="outline"
                     size="md"
                     withArrow
-                    className="max-sm:hidden lg:h-14 lg:px-9 lg:text-[0.75rem]"
+                    className="max-sm:hidden"
                   >
                     {t('hero.ctaSecondary')}
                   </PillButton>
                 </div>
+                <p className="type-body-sm -mt-1 text-slate lg:-mt-3">{t('hero.proof')}</p>
               </motion.div>
             </div>
 
@@ -206,10 +200,10 @@ export default function HeroStory({ ready = true }) {
               inert={phase !== 'case'}
               aria-live="polite"
             >
-              <div className="flex items-center gap-4 font-mono text-[0.62rem] tracking-[0.24em] text-slate-dim uppercase">
+              <div className="type-label flex items-center gap-4 text-slate">
                 <span className="text-peach">{String(caseIndex + 1).padStart(2, '0')}</span>
                 <span className="h-px w-16 bg-white/10" aria-hidden="true" />
-                {t('work.count')(PROJECTS.length)}
+                {String(PROJECTS.length).padStart(2, '0')}
               </div>
               <motion.div
                 key={caseIndex}
@@ -218,10 +212,10 @@ export default function HeroStory({ ready = true }) {
                 transition={{ duration: 0.6, ease: EASE }}
                 className="flex flex-col gap-4"
               >
-                <h2 className="font-display text-[clamp(2rem,9vw,3rem)] text-bone lg:text-[clamp(2.6rem,4.6vw,4.8rem)]">
+                <h2 className="type-display-lg text-bone">
                   {copy.name}
                 </h2>
-                <p className="font-mono text-[0.66rem] tracking-[0.18em] text-peach uppercase">
+                <p className="type-label text-peach">
                   {copy.category}
                 </p>
                 <p className="hidden max-w-md leading-relaxed text-slate lg:block">
@@ -283,7 +277,7 @@ export default function HeroStory({ ready = true }) {
           aria-hidden="true"
           className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 opacity-0 transition-opacity duration-700 lg:bottom-6 lg:gap-3"
         >
-          <span className="font-mono text-[0.55rem] tracking-[0.2em] whitespace-nowrap text-slate uppercase lg:text-[0.6rem] lg:tracking-[0.3em]">
+          <span className="type-label whitespace-nowrap text-slate">
             {t('portal.hint')}
           </span>
           <span className="relative h-6 w-px overflow-hidden bg-white/15 lg:h-10">

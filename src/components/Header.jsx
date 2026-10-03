@@ -4,7 +4,7 @@ import FullMenu from './FullMenu'
 import LanguageToggle from './LanguageToggle'
 import Logo from './Logo'
 import PillButton from './PillButton'
-import { WHATSAPP_URL } from '../data/site'
+import { NAV_LINKS, WHATSAPP_URL } from '../data/site'
 import { useI18n } from '../lib/locale'
 
 /**
@@ -60,17 +60,34 @@ export default function Header() {
             <Logo compact={condensed} />
           </a>
 
+          {/* Desktop: the sections are one click away. The full-screen menu
+              stays for touch screens, where there is no room for a bar. */}
+          <nav aria-label={t('ui.mainNav')} className="hidden lg:block">
+            <ul className="flex items-center gap-1">
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="type-button block rounded-full px-3 py-3 whitespace-nowrap text-slate xl:px-4 transition-colors duration-300 hover:text-mist"
+                  >
+                    {t(`nav.${link.key}`)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
           <div className="flex items-center gap-2 sm:gap-3">
             <LanguageToggle />
 
-            {/* Circular menu trigger — the icon morphs into an X. */}
+            {/* Circular menu trigger — the icon morphs into an X. Touch only. */}
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
               aria-controls="menu-fullscreen"
               aria-label={menuOpen ? t('ui.closeMenu') : t('ui.openMenu')}
-              className="hairline group relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/[0.03] transition-colors duration-500 hover:bg-white/[0.08] sm:h-11 sm:w-11"
+              className="hairline group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/[0.03] transition-colors duration-500 hover:bg-white/[0.08] lg:hidden"
             >
               <span className="relative block h-3 w-4">
                 <motion.span

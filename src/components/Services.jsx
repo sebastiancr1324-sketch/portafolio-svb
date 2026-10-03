@@ -1,11 +1,14 @@
 import { motion } from 'motion/react'
 import SplitText from './SplitText'
+import { whatsappWith } from '../data/site'
 import { useI18n } from '../lib/locale'
 
 /**
  * Services — a numbered editorial list rather than a card grid.
  * Hairline separators and oversized index numerals carry the hierarchy, so
- * four items read as one confident block.
+ * four items read as one confident block. Each row is a real link: it opens
+ * WhatsApp with a message about that service already typed in, so the arrow
+ * promises a click that actually goes somewhere.
  */
 export default function Services() {
   const { t } = useI18n()
@@ -15,7 +18,7 @@ export default function Services() {
   return (
     <section
       id="servicios"
-      className="relative scroll-mt-24 border-t border-white/8 py-28 md:py-36"
+      className="relative border-t border-white/8 py-24 md:py-32"
     >
       {/* Soft navy wash so the section separates from the portfolio above. */}
       <div
@@ -37,12 +40,12 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.6 }}
                 transition={{ duration: 0.6 }}
-                className="font-mono text-[0.62rem] tracking-[0.3em] text-peach uppercase"
+                className="type-label text-peach"
               >
                 {t('services.eyebrow')}
               </motion.span>
 
-              <h2 className="mt-4 font-display text-[clamp(2.5rem,6vw,4.5rem)] text-bone">
+              <h2 className="type-display-lg mt-3 text-bone">
                 <SplitText as="span" text={titleTop} by="word" className="block" />
                 <SplitText
                   as="span"
@@ -72,16 +75,19 @@ export default function Services() {
                   delay: i * 0.08,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className="group border-t border-white/8 py-8 transition-colors duration-500 last:border-b hover:border-peach/40 md:py-10"
+                className="border-t border-white/8 transition-colors duration-500 last:border-b hover:border-peach/40"
               >
-                <div className="flex items-start gap-6 md:gap-10">
-                  <span className="mt-1 font-display text-2xl text-peach/70 transition-colors duration-500 group-hover:text-peach md:text-3xl">
+                <a
+                  href={whatsappWith(service.whatsapp)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-start gap-6 rounded-lg py-8 md:gap-10 md:py-10"
+                >
+                  <span className="font-display text-[1.75rem] leading-none text-peach/70 transition-colors duration-500 group-hover:text-peach">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <div className="flex-1">
-                    <h3 className="font-display text-xl text-bone md:text-2xl">
-                      {service.title}
-                    </h3>
+                    <h3 className="type-title text-mist">{service.title}</h3>
                     <p className="mt-2 max-w-lg text-sm leading-relaxed text-slate md:text-base">
                       {service.text}
                     </p>
@@ -93,7 +99,7 @@ export default function Services() {
                     stroke="currentColor"
                     strokeWidth="1.5"
                     aria-hidden="true"
-                    className="mt-2 hidden h-6 w-6 shrink-0 text-slate-dim transition-all duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:translate-x-1.5 group-hover:text-peach md:block"
+                    className="mt-1 h-6 w-6 shrink-0 text-slate transition-all duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:translate-x-1.5 group-hover:text-peach"
                   >
                     <path
                       d="M4 12h16M14 6l6 6-6 6"
@@ -101,7 +107,7 @@ export default function Services() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </div>
+                </a>
               </motion.li>
             ))}
           </ul>

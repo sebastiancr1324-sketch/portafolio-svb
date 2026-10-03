@@ -3,24 +3,24 @@ import { useCallback, useRef } from 'react'
 /* Shared by every CTA so radii, type and motion never drift apart. */
 const BASE =
   'group relative inline-flex items-center justify-center gap-2.5 rounded-full ' +
-  'font-mono text-[0.7rem] font-medium tracking-[0.18em] uppercase no-select ' +
-  'transition-[transform,background-color,color,box-shadow] duration-500 ' +
+  'type-button no-select ' +
+  'transition-[transform,background-color,border-color,color,box-shadow] duration-500 ' +
   '[transition-timing-function:var(--ease-out-expo)] will-change-transform'
 
+/* Every size is at least 44px tall, so each one is a comfortable tap target. */
 const SIZES = {
-  sm: 'h-10 px-5 text-[0.65rem]',
+  sm: 'h-11 px-5',
   md: 'h-12 px-7',
-  lg: 'h-14 px-9 text-[0.75rem]',
-  xl: 'h-16 px-10 text-[0.8rem]',
+  lg: 'h-14 px-9',
+  xl: 'h-16 px-10',
 }
 
 const VARIANTS = {
   /** Filled accent. Highest emphasis — reserved for the primary action. */
-  primary:
-    'bg-peach text-ink hover:bg-peach-bright shadow-[0_10px_40px_-12px_rgba(232,180,160,0.7)] ' +
-    'hover:shadow-[0_18px_60px_-14px_rgba(232,180,160,0.85)]',
-  /** Hairline glass. Default for secondary actions. */
-  outline: 'hairline bg-white/[0.03] text-mist hover:bg-white/[0.07] hover:text-bone',
+  primary: 'bg-peach text-ink hover:bg-peach-bright shadow-cta',
+  /** Transparent with a hairline border. Default for secondary actions. */
+  outline:
+    'border border-white/14 bg-transparent text-mist hover:border-mist hover:text-bone',
   /** Solid navy, for mid-weight actions on light sections. */
   navy: 'bg-navy text-bone hover:bg-navy-soft',
   /** Quiet text link with an arrow that slides on hover.

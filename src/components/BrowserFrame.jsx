@@ -29,7 +29,7 @@ export default function BrowserFrame({ url, logo, logoType, children, className 
               style={logoType === 'webp' ? { mixBlendMode: 'screen' } : undefined}
             />
           )}
-          <span className="truncate font-mono text-[0.6rem] tracking-wide text-slate">
+          <span className="truncate font-mono text-xs tracking-wide text-slate">
             {url}
           </span>
         </div>

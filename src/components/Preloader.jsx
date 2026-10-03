@@ -179,7 +179,7 @@ export default function Preloader({ onDone }) {
             }}
           />
         </div>
-        <div className="flex items-center justify-between font-mono text-[0.6rem] tracking-[0.24em] text-slate-dim uppercase">
+        <div className="flex items-center justify-between type-label text-slate">
           <span>{t('ui.loading')}</span>
           <span className="text-mist tabular-nums">
             {String(shown).padStart(3, '0')}

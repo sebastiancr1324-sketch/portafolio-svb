@@ -59,6 +59,76 @@
 
   /* Layout */
   --spacing-shell: 1.5rem;
+  --spacing-nav: 72px;
+
+  /* Elevation */
+  --shadow-cta: 0 12px 40px -12px rgba(232, 180, 160, 0.55);
+  --shadow-focus: 0 0 0 2px #0a0f18, 0 0 0 4px #e8b4a0;
+}
+
+/* ------------------------------------------------------------------
+   Type scale. One style per role, so headings never drift apart again:
+   Anton only from 40px up, mono never under 12px.
+   Colour rule: `text-bone` (white) only on display headings, `text-mist`
+   for every other piece of primary text.
+------------------------------------------------------------------ */
+@utility type-display-xl {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+@utility type-display-lg {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 0.96;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+@utility type-display-md {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.5rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+@utility type-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+@utility type-body-sm {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+}
+
+@utility type-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility type-button {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 @layer base {
@@ -87,8 +157,9 @@
   }
 
   /* Anchor targets clear the floating header. */
-  :target {
-    scroll-margin-top: 7rem;
+  section[id],
+  footer[id] {
+    scroll-margin-top: var(--spacing-nav);
   }
 
   h1,
@@ -98,7 +169,7 @@
     margin: 0;
     font-family: var(--font-display);
     font-weight: 400;
-    line-height: 0.92;
+    line-height: 0.96;
     letter-spacing: -0.01em;
     text-transform: uppercase;
     text-wrap: balance;
@@ -339,6 +410,16 @@
       opacity: 0;
     }
   }
+}
+
+/* ------------------------------------------------------------------
+   Focus ring for links and buttons. Unlayered on purpose: it has to beat
+   the shadow utilities on buttons (the CTA halo) while it is showing.
+------------------------------------------------------------------ */
+a:focus-visible,
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 /* ------------------------------------------------------------------

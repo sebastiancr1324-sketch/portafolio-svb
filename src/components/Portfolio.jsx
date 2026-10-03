@@ -8,14 +8,14 @@ import { useI18n } from '../lib/locale'
 /** Section heading. */
 function SectionHeading({ eyebrow, title, count }) {
   return (
-    <div className="mb-16 flex flex-col gap-6 border-b border-white/8 pb-8 md:mb-24 md:flex-row md:items-end md:justify-between">
+    <div className="mb-16 flex flex-col gap-6 border-b border-white/8 pb-8 md:flex-row md:items-end md:justify-between">
       <div>
         <motion.span
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-[0.62rem] tracking-[0.3em] text-peach uppercase"
+          className="type-label text-peach"
         >
           {eyebrow}
         </motion.span>
@@ -24,12 +24,12 @@ function SectionHeading({ eyebrow, title, count }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-4 font-display text-[clamp(2.5rem,7vw,5.5rem)] text-bone"
+          className="type-display-lg mt-3 text-bone"
         >
           {title}
         </motion.h2>
       </div>
-      <span className="font-mono text-[0.62rem] tracking-[0.24em] text-slate-dim uppercase">
+      <span className="type-label text-slate">
         {count}
       </span>
     </div>
@@ -88,16 +88,16 @@ function ProjectCard({ project, index }) {
       {/* Meta */}
       <div className="mt-7 flex flex-1 flex-col">
         <div className="flex items-center gap-4">
-          <span className="font-mono text-[0.6rem] tracking-[0.2em] text-peach">
+          <span className="type-label text-peach">
             {project.index}
           </span>
           <span className="h-px flex-1 bg-white/10" aria-hidden="true" />
-          <span className="font-mono text-[0.6rem] tracking-[0.16em] text-slate-dim uppercase">
+          <span className="type-label text-right text-slate">
             {copy.category}
           </span>
         </div>
 
-        <h3 className="mt-4 font-display text-[clamp(1.6rem,3.2vw,2.6rem)] text-bone">
+        <h3 className="type-display-md mt-4 text-bone">
           {copy.name}
         </h3>
 
@@ -105,11 +105,25 @@ function ProjectCard({ project, index }) {
           {copy.description}
         </p>
 
+        {/* Case facts: what makes a screenshot read as a case study. */}
+        <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-4">
+          {[
+            [t('work.role'), copy.role],
+            [t('work.year'), project.year],
+            [t('work.stack'), project.stack],
+          ].map(([term, value]) => (
+            <div key={term}>
+              <dt className="type-label text-slate">{term}</dt>
+              <dd className="type-body-sm mt-1 font-medium text-mist">{value}</dd>
+            </div>
+          ))}
+        </dl>
+
         <div className="mt-6 flex flex-wrap items-center gap-2">
           {copy.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-white/[0.04] px-3 py-1.5 font-mono text-[0.58rem] tracking-[0.14em] text-slate uppercase ring-1 ring-white/8"
+              className="type-label rounded-full bg-white/[0.04] px-3 py-1.5 text-slate ring-1 ring-white/8"
             >
               {tag}
             </span>
@@ -122,7 +136,7 @@ function ProjectCard({ project, index }) {
               {t('ui.liveSite')}
             </PillButton>
           ) : (
-            <span className="inline-flex items-center gap-2.5 font-mono text-[0.62rem] tracking-[0.18em] text-slate-dim uppercase">
+            <span className="type-button inline-flex items-center gap-2.5 text-slate">
               <span
                 className="h-1.5 w-1.5 rounded-full bg-slate-dim"
                 aria-hidden="true"
@@ -146,7 +160,7 @@ function ProjectCard({ project, index }) {
 export default function Portfolio() {
   const { t } = useI18n()
   return (
-    <section id="proyectos" className="relative scroll-mt-24 py-28 md:py-36">
+    <section id="proyectos" className="relative py-24 md:py-32">
       <div className="shell">
         <SectionHeading
           eyebrow={t('work.eyebrow')}

@@ -104,7 +104,7 @@ export default function FullMenu({ open, onClose }) {
               ref={closeRef}
               type="button"
               onClick={onClose}
-              className="absolute top-24 right-0 flex items-center gap-3 rounded-full px-4 py-2 font-mono text-[0.65rem] tracking-[0.2em] text-slate uppercase transition-colors duration-500 hover:text-peach"
+              className="absolute top-24 right-0 flex items-center gap-3 type-button h-11 rounded-full px-4 text-slate transition-colors duration-500 hover:text-peach"
             >
               {t('ui.closeMenu')}
               <span aria-hidden="true" className="relative block h-3 w-3">
@@ -122,7 +122,7 @@ export default function FullMenu({ open, onClose }) {
                     onClick={onClose}
                     className="group flex items-baseline gap-4 py-5 sm:gap-8 sm:py-7"
                   >
-                    <span className="font-mono text-[0.6rem] text-slate-dim sm:text-xs">
+                    <span className="type-label text-slate">
                       0{i + 1}
                     </span>
                     <SplitText
@@ -150,14 +150,14 @@ export default function FullMenu({ open, onClose }) {
             {/* Footer of the overlay: direct contact routes. */}
             <div className="mt-auto flex flex-col gap-8 pt-14 sm:flex-row sm:items-end sm:justify-between">
               <div className="flex flex-col gap-4">
-                <span className="font-mono text-[0.6rem] tracking-[0.24em] text-slate-dim uppercase">
+                <span className="type-label text-slate">
                   {t('ui.directContact')}
                 </span>
                 <a
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-fit rounded-full bg-peach px-6 py-3 font-mono text-[0.7rem] tracking-[0.18em] text-ink uppercase transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-0.5"
+                  className="type-button inline-flex h-12 w-fit items-center rounded-full bg-peach px-6 text-ink transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-0.5"
                 >
                   WhatsApp
                 </a>
@@ -165,19 +165,19 @@ export default function FullMenu({ open, onClose }) {
                   href={INSTAGRAM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hairline w-fit rounded-full px-6 py-3 font-mono text-[0.7rem] tracking-[0.18em] text-mist uppercase transition-colors duration-500 hover:text-peach"
+                  className="type-button inline-flex h-12 w-fit items-center rounded-full border border-white/14 px-6 text-mist transition-colors duration-500 hover:text-peach"
                 >
                   {t('cta.instagram')}
                 </a>
                 <a
                   href={`mailto:${EMAIL}`}
-                  className="hairline w-fit rounded-full px-6 py-3 font-mono text-[0.7rem] tracking-[0.18em] text-mist uppercase transition-colors duration-500 hover:text-peach"
+                  className="type-button inline-flex h-12 w-fit items-center rounded-full border border-white/14 px-6 text-mist transition-colors duration-500 hover:text-peach"
                 >
                   {t('cta.email')}
                 </a>
               </div>
 
-              <p className="max-w-xs text-sm leading-relaxed text-slate-dim">
+              <p className="max-w-xs text-sm leading-relaxed text-slate">
                 {t('ui.menuTagline')}
               </p>
             </div>

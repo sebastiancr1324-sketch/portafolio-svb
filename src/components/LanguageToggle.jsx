@@ -33,7 +33,7 @@ export default function LanguageToggle({ className = '' }) {
             lang={code}
             // The pill stays compact, but an invisible ::after stretches the
             // tap target to 44px tall so it is easy to hit with a thumb.
-            className="relative rounded-full px-2 py-1.5 font-mono text-[0.58rem] tracking-[0.12em] uppercase transition-colors duration-300 after:absolute after:inset-x-0 after:-inset-y-[9px] after:content-['']"
+            className="relative type-label rounded-full px-2.5 py-1.5 transition-colors duration-300 after:absolute after:inset-x-0 after:-inset-y-[9px] after:content-['']"
           >
             {active && (
               <motion.span
@@ -44,7 +44,7 @@ export default function LanguageToggle({ className = '' }) {
             )}
             <span
               className={`relative z-10 transition-colors duration-300 ${
-                active ? 'text-ink' : 'text-slate-dim hover:text-mist'
+                active ? 'text-ink' : 'text-slate hover:text-mist'
               }`}
             >
               {LOCALE_LABEL[code]}
